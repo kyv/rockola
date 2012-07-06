@@ -9,32 +9,26 @@
  *              Rockola.
  * 
  */
-var lista_reproduccion = null;
-
 //Incio del document ready
 $(function(){
 	cargar_lista('ajax/lista_reproduccion.js');
-	var rockPlayer = new jPlayerPlaylist({
-		jPlayer: "#jquery_jplayer_N",
-		cssSelectorAncestor: "#rockola"
-	}, [
-		{
-			title:"Buffaro Bill vs Los Jinetes Ja",
-			artist:"Los Jawuai Surfers",
-			oga:"media/Los_Jawuai-BuFaLo_BiLl_Vs_LoS_jInEtEs_Ja.ogg"
-			//mp3:"media/folie_atrois_ELECTRO.mp3"
-		}
-	], {
-		playlistOptions: {
-			enableRemoveControls: true,
-			autoPlay:true
-		},
-		swfPath: "js",
-		supplied: "webmv, ogv, m4v, oga, mp3"
-	});
-	
+	///////////////
+	rockola.init('#playList ul',
+		new jPlayerPlaylist({
+				jPlayer: "#jquery_jplayer_N",
+				cssSelectorAncestor: "#rockola"
+			}, [], {
+				playlistOptions: {
+					enableRemoveControls: true,
+					autoPlay:true
+				},
+				swfPath: "js",
+				supplied: "webmv, ogv, m4v, oga, mp3"
+	}));
+	//Cargamos el 1er audio en la lista de reproducción.
+	rockola.setTrack(0);
 	$('ul.rockolites li a.oga').click(function() {
-		rockPlayer.setPlaylist([
+		rockola.player.setPlaylist([
 			{
 				title:$(this).text(),
 				artist:this.title,
@@ -45,7 +39,7 @@ $(function(){
 	
 	$('#playList a.mp3').click(function() {
 		h2 = $(this).parent().parent().children('h2').text().split(' - ')
-		rockPlayer.setPlaylist([
+		rockola.player.setPlaylist([
 			{
 				title:h2[1],
 				artist:h2[0],
@@ -55,7 +49,7 @@ $(function(){
 		});
 	$('#playList a.ogg').click(function() {
 		h2 = $(this).parent().parent().children('h2').text().split(' - ')
-		rockPlayer.setPlaylist([
+		rockola.player.setPlaylist([
 			{
 				title:h2[1],
 				artist:h2[0],
@@ -66,120 +60,119 @@ $(function(){
 	
 		
 	$("#playlist-setPlaylist-audio-mix").click(function() {
-		//rockPlayer.setPlaylist([]);
+		//rockola.player.setPlaylist([]);
 	});
 	// The remove commands
 	
 	$("#remover").click(function() {
-		rockPlayer.remove(1);//
-		//rockPlayer.remove(-2);
-		//rockPlayer.remove(0);
+		rockola.player.remove(1);//
+		//rockola.player.remove(-2);
+		//rockola.player.remove(0);
 	});
 
 	// The shuffle commands
 
 	$("#revolver").click(function() {
-		rockPlayer.shuffle();
-		//rockPlayer.shuffle(false);
-		//rockPlayer.shuffle(true);
+		rockola.player.shuffle();
+		//rockola.player.shuffle(false);
+		//rockola.player.shuffle(true);
 	});
 
 	// The select commands
 
 	$("#select-2").click(function() {
-		rockPlayer.select(-2);
-		rockPlayer.play();
+		rockola.player.select(-2);
+		rockola.player.play();
 	});
 	// The next/previous commands
 	$("#playlist-next").click(function() {
-		rockPlayer.next();
+		rockola.player.next();
 	});
 	$("#playlist-previous").click(function() {
-		rockPlayer.previous();
+		rockola.player.previous();
 	});
 	// The pause command
 	$("#playlist-pause").click(function() {
-		rockPlayer.pause();
+		rockola.player.pause();
 	});
 
 	// Changing the playlist options
 
 	// Option: autoPlay
 	$("#playlist-option-autoPlay-true").click(function() {
-		rockPlayer.option("autoPlay", true);
+		rockola.player.option("autoPlay", true);
 	});
 	$("#playlist-option-autoPlay-false").click(function() {
-		rockPlayer.option("autoPlay", false);
+		rockola.player.option("autoPlay", false);
 	});
 
 	// Option: enableRemoveControls
 	$("#playlist-option-enableRemoveControls-true").click(function() {
-		rockPlayer.option("enableRemoveControls", true);
+		rockola.player.option("enableRemoveControls", true);
 	});
 	$("#playlist-option-enableRemoveControls-false").click(function() {
-		rockPlayer.option("enableRemoveControls", false);
+		rockola.player.option("enableRemoveControls", false);
 	});
 
 	// Option: displayTime
 
 	$("#playlist-option-displayTime-0").click(function() {
-		rockPlayer.option("displayTime", 0);
+		rockola.player.option("displayTime", 0);
 	});
 	$("#playlist-option-displayTime-fast").click(function() {
-		rockPlayer.option("displayTime", "fast");
+		rockola.player.option("displayTime", "fast");
 	});
 	$("#playlist-option-displayTime-slow").click(function() {
-		rockPlayer.option("displayTime", "slow");
+		rockola.player.option("displayTime", "slow");
 	});
 	$("#playlist-option-displayTime-2000").click(function() {
-		rockPlayer.option("displayTime", 2000);
+		rockola.player.option("displayTime", 2000);
 	});
 
 	// Option: addTime
 
 	$("#playlist-option-addTime-0").click(function() {
-		rockPlayer.option("addTime", 0);
+		rockola.player.option("addTime", 0);
 	});
 	$("#playlist-option-addTime-fast").click(function() {
-		rockPlayer.option("addTime", "fast");
+		rockola.player.option("addTime", "fast");
 	});
 	$("#playlist-option-addTime-slow").click(function() {
-		rockPlayer.option("addTime", "slow");
+		rockola.player.option("addTime", "slow");
 	});
 	$("#playlist-option-addTime-2000").click(function() {
-		rockPlayer.option("addTime", 2000);
+		rockola.player.option("addTime", 2000);
 	});
 
 	// Option: removeTime
 
 	$("#playlist-option-removeTime-0").click(function() {
-		rockPlayer.option("removeTime", 0);
+		rockola.player.option("removeTime", 0);
 	});
 	$("#playlist-option-removeTime-fast").click(function() {
-		rockPlayer.option("removeTime", "fast");
+		rockola.player.option("removeTime", "fast");
 	});
 	$("#playlist-option-removeTime-slow").click(function() {
-		rockPlayer.option("removeTime", "slow");
+		rockola.player.option("removeTime", "slow");
 	});
 	$("#playlist-option-removeTime-2000").click(function() {
-		rockPlayer.option("removeTime", 2000);
+		rockola.player.option("removeTime", 2000);
 	});
 
 	// Option: shuffleTime
 
 	$("#playlist-option-shuffleTime-0").click(function() {
-		rockPlayer.option("shuffleTime", 0);
+		rockola.player.option("shuffleTime", 0);
 	});
 	$("#playlist-option-shuffleTime-fast").click(function() {
-		rockPlayer.option("shuffleTime", "fast");
+		rockola.player.option("shuffleTime", "fast");
 	});
 	$("#playlist-option-shuffleTime-slow").click(function() {
-		rockPlayer.option("shuffleTime", "slow");
+		rockola.player.option("shuffleTime", "slow");
 	});
 	$("#playlist-option-shuffleTime-2000").click(function() {
-		rockPlayer.option("shuffleTime", 2000);
+		rockola.player.option("shuffleTime", 2000);
 	});
-
 });
 /*
  * Funcion encargada de cargar la lista de resproduccion
@@ -190,20 +183,21 @@ cargar_lista = function (lista_url){
 		async : false,
 		dataType: 'json', 
 		success: function(listaReproducccion) {
-			lista_reproduccion=listaReproducccion;
+			rockola.lista_reproduccion=listaReproducccion;
 			var lista_HTML = '';
+			inicio=true
 			$.each(listaReproducccion, function(key, cancion) {
-						lista_HTML += '<li><h2> '+ cancion.artist +' - <span>' +
-													cancion.title + '</span></h2><p>'+cancion.duration+' ';
-						if(cancion.mp3){
-							lista_HTML += '<a href=' + cancion.mp3 + ' class="mp3">mp3</a>';
-						}
-						if(cancion.oga){
-							lista_HTML += '<a href=' + cancion.oga + ' class="ogg">ogg</a>';
-						}
-						lista_HTML += '</p></li>'
+				lista_HTML += '<li id="rockolaTrack'+key+'"><h2> '+ cancion.artist +' - <span>' +
+					cancion.title + '</span></h2><p>'+cancion.duration+' ';
+				if(cancion.mp3){
+					lista_HTML += '<a href=' + cancion.mp3 + ' class="mp3">mp3</a>';
+				}
+				if(cancion.oga){
+					lista_HTML += '<a href=' + cancion.oga + ' class="ogg">ogg</a>';
+				}
+				lista_HTML += '</p></li>'
 			});
-				//Agregamos en lista no ordenada(ul) los items y lo insertamos en 
+			//Agregamos en lista no ordenada(ul) los items y lo insertamos en 
 			$('<ul/>',{html: lista_HTML}).appendTo('#playList');
 		}
 	}).error(function(){/** aqui se deberia de cargar una lista por defecto */});
