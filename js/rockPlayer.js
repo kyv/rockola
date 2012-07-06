@@ -9,8 +9,11 @@
  *              Rockola.
  * 
  */
- 
-$(document).ready(function(){
+var lista_reproduccion = null;
+
+//Incio del document ready
+$(function(){
+	cargar_lista('ajax/lista_reproduccion.js');
 	var rockPlayer = new jPlayerPlaylist({
 		jPlayer: "#jquery_jplayer_N",
 		cssSelectorAncestor: "#rockola"
@@ -63,45 +66,7 @@ $(document).ready(function(){
 	
 		
 	$("#playlist-setPlaylist-audio-mix").click(function() {
-		rockPlayer.setPlaylist([
-			{
-				title:"Cro Magnon Man",
-				artist:"The Stark Palace",
-				mp3:"http://www.jplayer.org/audio/mp3/TSP-01-Cro_magnon_man.mp3",
-				oga:"http://www.jplayer.org/audio/ogg/TSP-01-Cro_magnon_man.ogg"
-			},
-			{
-				title:"Your Face",
-				artist:"The Stark Palace",
-				mp3:"http://www.jplayer.org/audio/mp3/TSP-05-Your_face.mp3",
-				oga:"http://www.jplayer.org/audio/ogg/TSP-05-Your_face.ogg"
-			},
-			{
-				title:"Hidden",
-				artist:"Miaow",
-				free: true,
-				mp3:"http://www.jplayer.org/audio/mp3/Miaow-02-Hidden.mp3",
-				oga:"http://www.jplayer.org/audio/ogg/Miaow-02-Hidden.ogg"
-			},
-			{
-				title:"Cyber Sonnet",
-				artist:"The Stark Palace",
-				mp3:"http://www.jplayer.org/audio/mp3/TSP-07-Cybersonnet.mp3",
-				oga:"http://www.jplayer.org/audio/ogg/TSP-07-Cybersonnet.ogg"
-			},
-			{
-				title:"Tempered Song",
-				artist:"Miaow",
-				mp3:"http://www.jplayer.org/audio/mp3/Miaow-01-Tempered-song.mp3",
-				oga:"http://www.jplayer.org/audio/ogg/Miaow-01-Tempered-song.ogg"
-			},
-			{
-				title:"Lentement",
-				artist:"Miaow",
-				mp3:"http://www.jplayer.org/audio/mp3/Miaow-03-Lentement.mp3",
-				oga:"http://www.jplayer.org/audio/ogg/Miaow-03-Lentement.ogg"
-			}
-		]);
+		//rockPlayer.setPlaylist([]);
 	});
 	// The remove commands
 	
@@ -215,5 +180,31 @@ $(document).ready(function(){
 		rockPlayer.option("shuffleTime", 2000);
 	});
 
-
 });
+/*
+ * Funcion encargada de cargar la lista de resproduccion
+ */
+cargar_lista = function (lista_url){
+	$.ajax({
+		url: lista_url,
+		async : false,
+		dataType: 'json', 
+		success: function(listaReproducccion) {
+			lista_reproduccion=listaReproducccion;
+			var lista_HTML = '';
+			$.each(listaReproducccion, function(key, cancion) {
+						lista_HTML += '<li><h2> '+ cancion.artist +' - <span>' +
+													cancion.title + '</span></h2><p>'+cancion.duration+' ';
+						if(cancion.mp3){
+							lista_HTML += '<a href=' + cancion.mp3 + ' class="mp3">mp3</a>';
+						}
+						if(cancion.oga){
+							lista_HTML += '<a href=' + cancion.oga + ' class="ogg">ogg</a>';
+						}
+						lista_HTML += '</p></li>'
+			});
+				//Agregamos en lista no ordenada(ul) los items y lo insertamos en 
+			$('<ul/>',{html: lista_HTML}).appendTo('#playList');
+		}
+	}).error(function(){/** aqui se deberia de cargar una lista por defecto */});
+}//fin función cargar_lista
