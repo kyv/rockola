@@ -81,11 +81,28 @@ a{text-decoration:none;font-weight:bold;}
 	list-style-type:none;
 	padding:0 1em;
 	overflow:hidden;
+	cursor: pointer;
+	cursor: hand;
 }
 #col-centro #playList ul li p{ text-align:left;}
 #col-centro #playList ul li:nth-child(even){
 	background:#F5F5F5;
 }
+#col-centro #playList ul li.activa:nth-child(even),
+#col-centro #playList ul li.activa{
+	background: #0091DC;
+	background-repeat: repeat-x;
+	background-image: -moz-linear-gradient(top, #0091DC, #005BA5);
+	background-image: -ms-linear-gradient(top, #0091DC, #005BA5);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#0091DC), to(#005BA5));
+	background-image: -webkit-linear-gradient(top, #0091DC, #005BA5);
+	background-image: -o-linear-gradient(top, #0091DC, #005BA5);
+	background-image: linear-gradient(top, #0091DC, #005BA5);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0091DC', endColorstr='#005BA5',GradientType=0 );
+	border:#0059BE 1px solid;
+	border-top:#3F99FF 2px solid;
+}
+
 #col-centro h1.title {
 	color:#930004;
 	font-size:2.5em;
@@ -99,7 +116,13 @@ a{text-decoration:none;font-weight:bold;}
 	text-shadow:1px 1px 0 #FFF,-1px -1px 10px #999;
 	color:#0073C3;
 }
-
+#playList li.activa h2{
+text-shadow:1px 1px 3px #002640;
+color:#FFF;
+}
+#playList li.activa h2 span{
+text-shadow:-1px -1px 2px #29A8FF;
+}
 #col-centro h2.label {padding:0;text-align:center;margin:0}
 #col-centro h2.label marquee {
 	color:#005EC6;
