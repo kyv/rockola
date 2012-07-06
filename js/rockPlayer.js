@@ -37,16 +37,10 @@ $(function(){
 			return false;
 		});
 	
-	$('#playList a.mp3').click(function() {
-		h2 = $(this).parent().parent().children('h2').text().split(' - ')
-		rockola.player.setPlaylist([
-			{
-				title:h2[1],
-				artist:h2[0],
-				mp3: this.href
-			}]);
-			return false;
-		});
+	$('#playList li').click(function() {
+		rockola.setTrack( $(this).attr('id').match(/[0-9]+$/)  );
+	});
+
 	$('#playList a.ogg').click(function() {
 		h2 = $(this).parent().parent().children('h2').text().split(' - ')
 		rockola.player.setPlaylist([
