@@ -39,7 +39,7 @@ $(function(){
 	
 	$('#playList li').click(function() {
 		rockola.setTrack( $(this).attr('id').match(/[0-9]+$/)  );
-		rockola.option('autoPlay', true);
+		rockola.player.option('autoPlay', true);
 	});
 
 	$('#playList a.ogg').click(function() {
