@@ -11,6 +11,7 @@ rockola = {
 	rockola.contenedor.find('li.activa').removeClass('activa');
 	$(rockola.contenedor.find('li')[index]).addClass('activa');
 	rockola.player.setPlaylist([rockola.lista_reproduccion[index]]);
+	rockola.player.play(0);
 	rockola.player.option('autoPlay', true);
 },
 'init' : function(content_query, player){
