@@ -20,7 +20,7 @@ $(function(){
 			}, [], {
 				playlistOptions: {
 					enableRemoveControls: true,
-					autoPlay:true
+					autoPlay:false
 				},
 				swfPath: "js",
 				supplied: "webmv, ogv, m4v, oga, mp3"
