@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('ajax/lista_reproduccion.js');
+	cargar_lista('static/ajax/lista_reproduccion.js');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({

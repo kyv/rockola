@@ -1,0 +1,67 @@
+<!doctype html>
+<html itemscope itemtype="http://schema.org/Organization" lang="en">
+<meta charset="utf-8"/>
+
+{% case page.layout %}
+{% when 'default' %}
+		<!-- TO Fancy SEARCH ENGINE -->
+		<title>rockolateka radio</title>
+		<meta name="description" content="Rockolateka Virtualizada al alcanze de tus Digitoz"/>
+
+		<!-- TO FANCY GOOGLE -->
+		<meta itemprop="name" content="Rockoklateka Radios"/>
+		<meta itemprop="description" content="Rockolateka Virtualizada al alcanze de sus Digitoz"/>
+
+		<!-- TO FANCY FACEBOOK -->
+		<meta property="og:title" content="Radio Rockolateka" />
+		<meta property="og:type" content="company" />
+		<meta property="og:url" content="http://rockola.flujos.org/" />
+		<meta property="og:site_name" content="Rockolateka Radio" />
+
+
+{% else %}
+		<title>{{ site.tagline }} - {{ page.title }}</title>
+		<meta name="description" content="Rockolateka Virtualizada al alcanze de tus Digitoz"/>
+
+		<meta itemprop="name" content="{{ site.tagline }} - {{ page.title }} - Rockola"/>
+		<meta itemprop="description" content="Rockolateka Virtualizada al alcanze de sus Digitoz"/>
+
+		<meta property="og:title" content="{{ site.tagline }} - {{ page.title }} - Rockola" />
+		<meta property="og:type" content="company" />
+		<meta property="og:url" content="{{ site.production_url }}{{ page.url }}" />
+		<meta property="og:image" content="http://flujos.org/img.png" />
+		<meta property="og:site_name" content="Rockola Radio" />
+
+
+{% endcase %}
+		<meta name="keywords" content="radio, javascript, web application, UI design, CSS, XHTML, Flujos.org"/>
+		<meta name="robots" content="noodp" />
+
+		<link rel="canonical" href="http://rockola.flujos.org/"/>
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+
+
+		
+		<link rel="stylesheet" media="all" href="/static/css/style.css"/>
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+
+		<link href="http://feeds.feedburner.com/flujos" rel="alternate" title="{{ site.sitename }} | {{ site.tagline }}" type="application/atom+xml" />
+		<link rel="search" type="application/opensearchdescription+xml" title="Website" href="opensearch.xml" />
+		<link rel="stylesheet" type="text/css" media="all" href="static/css/jquery-ui-1.8.20.custom.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="static/js/Jplayer.skin/jplayer.blue.monday.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="static/css/style.css"/>
+	<script type="text/javascript" src="static/js/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="static/js/jquery-ui-1.8.20.custom.min.js"></script>
+	<script type="text/javascript" src="static/js/rockplayer_core.js"></script>
+   	<script type="text/javascript" src="static/js/jquery.jplayer.js"></script>
+	<script type="text/javascript" src="static/js/jplayer.playlist.js"></script>
+	<script type="text/javascript" src="static/js/rockPlayer.js"></script>
+	<script type="text/javascript" src="static/js/rockUi.js"></script>
+	<link rel="icon" type="image/png" href="favicon.png">
+
+	</head>
