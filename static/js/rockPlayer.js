@@ -26,7 +26,6 @@ $(function(){
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
 	//Cargamos el 1er audio en la lista de reproducción.
-	rockola.setTrack(0);
 	$('ul.rockolites li a.oga').click(function() {
 		rockola.player.setPlaylist([
 			{
@@ -39,7 +38,6 @@ $(function(){
 	
 	$('#playList li').click(function() {
 		rockola.setTrack( $(this).attr('id').match(/[0-9]+$/)  );
-		rockola.player.option('autoPlay', true);
 	});
 
 	$('#playList a.ogg').click(function() {
