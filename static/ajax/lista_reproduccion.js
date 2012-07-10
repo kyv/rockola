@@ -1,5 +1,11 @@
 [
 	{
+		"title":"Mood Indigo",
+		"artist":"Biz Band",
+		"duration":"nil",
+		"oga":"http://yaxhil.flujos.org/audio/biz_band/MOOD_INDIGO.oga"
+	},
+	{
 		"title":"Buffaro Bill vs Los Jinetes Ja",
 		"artist":"Los Jawuai Surfers",
 		"duration":"3:52",
@@ -15,12 +21,6 @@
 		"title":"Free Software Song",
 		"artist":"Richard Stallman",
 		"duration":"1:32",
-		"oga":"./media/free-software-song-rhythmic.ogg"
-	},
- 	{
-		"title":"Free Software Song",
-		"artist":"Richard Stallman",
-		"duration":"1:32",
-		"oga":"./media/free-software-song-rhythmic.ogg"
+		"oga":"http://www.gnu.org/music/free-software-song.ogg"
 	}
 ]
