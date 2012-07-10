@@ -1,1 +1,5 @@
-Esto sólo es un demo de como se veria el sitio.
+Demo de la rockola:
+http://kyv.github.com/rockola/
+
+Ver codigo: 
+https://github.com/kyv/rockola/tree/gh-pages
