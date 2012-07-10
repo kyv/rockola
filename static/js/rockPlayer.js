@@ -39,6 +39,7 @@ $(function(){
 	
 	$('#playList li').click(function() {
 		rockola.setTrack( $(this).attr('id').match(/[0-9]+$/)  );
+		rockola.option('autoPlay', true);
 	});
 
 	$('#playList a.ogg').click(function() {
@@ -91,14 +92,6 @@ $(function(){
 	});
 
 	// Changing the playlist options
-
-	// Option: autoPlay
-	$("#playlist-option-autoPlay-true").click(function() {
-		rockola.player.option("autoPlay", true);
-	});
-	$("#playlist-option-autoPlay-false").click(function() {
-		rockola.player.option("autoPlay", false);
-	});
 
 	// Option: enableRemoveControls
 	$("#playlist-option-enableRemoveControls-true").click(function() {
