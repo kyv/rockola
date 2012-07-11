@@ -1,3 +1,8 @@
+---
+layout: post 
+title: Normalización de volumen 
+---
+
 # Normalización de volumen en Linux
 
 <a href='http://tech.ebu.ch/loudness'><img src="http://tech.ebu.ch/webdav/site/tech/shared/images/logo_128_80px.jpg" class="right"/></a>

@@ -1,3 +1,8 @@
+---
+layout: post 
+title: Transmitiendo con arch 
+---
+
 ## Transmitiendo con archlinux, MPD, mpd-hora, darkice y pulseaudio
 
 Damos 2 salidas a [[mpd|http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki]], uno a las bocinas y otro a [[darkice|http://code.google.com/p/darkice/]]. Eso nos permite monitorearlos por seperados, o inclusive bajar el volumen de un salida para unicamente dejar abierto la salida al internet. 

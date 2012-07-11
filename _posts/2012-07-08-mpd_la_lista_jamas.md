@@ -1,3 +1,7 @@
+---
+layout: post 
+title: Mpd la lista jamas 
+---
 # Lista de reproduccion que acaba jamas
 
 Una forma sencilla de hacer que la lista de reproduccion no acaba es llamar a un script al momento en que nuestro lista de reproduccion tiene menos que 2 rolas. Con mpdcron, podemos utilizar el siguiente codigo en en nuestro ~/.mpdcron/hooks/player: 
