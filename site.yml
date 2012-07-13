@@ -1,0 +1,16 @@
+title : Rockola Radio 
+tagline: Blog Tagline
+author :
+  name : Firstname Lastname
+  email : blah@email.test
+  github : username
+  twitter : username
+  feedburner : feedname
+
+navigation :
+  - novedades.html
+  - tags.html
+  - categories.html
+  - pages.html
+  - about.md
+  

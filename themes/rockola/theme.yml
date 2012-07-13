@@ -1,0 +1,32 @@
+{
+  "stylesheets" : {
+    "default" : [
+      "style.css",
+      "bootstrap.min.css",
+      "jquery-ui-1.8.20.custom.css",
+      "Jplayer.skin/jplayer.blue.monday.css"
+    ],
+   
+    "widgets" : {
+      "google_prettify" : "twitter-bootstrap.css"
+    }
+    
+  },
+
+  "javascripts" : {
+    "default" : [
+	"jquery-1.7.2.js",
+	"jquery-ui-1.8.20.custom.min.js",
+	"jquery.jplayer.js",
+	"jplayer.playlist.js",
+	"rockplayer_core.js",
+	"rockPlayer.js",
+	"rockUi.js"
+    ]
+  },
+  
+  "manifest" : {
+    "author" : "Jacob Thornton and Mark Otto",
+    "website" : "http://twitter.github.com/bootstrap"
+  }
+}
