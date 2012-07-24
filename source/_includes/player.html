@@ -1,0 +1,56 @@
+	<div id="rockola" class="jp-video jp-video-270p">
+	    <div class="jp-type-playlist">
+		<div id="jquery_jplayer_N" class="jp-jplayer"></div>
+			<div class="jp-gui">
+				<div class="jp-interface">
+				    <div class="jp-progress">
+			  		<div class="jp-seek-bar">
+					    <div class="jp-play-bar"></div>
+					</div>
+				    </div>
+				<div class="jp-current-time"></div>
+				<div class="jp-duration"></div>
+				<div class="jp-controls-holder">
+				    <ul class="jp-controls">
+				    	<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+				    	<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+				    	<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+				    	<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+				    	<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+				    	<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+				    	<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+				    	<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+				    </ul>
+				    <div class="jp-volume-bar">
+				         <div class="jp-volume-bar-value"></div>
+				    </div>
+				    <ul class="jp-toggles">
+					<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+					<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+					<li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">shuffle</a></li>
+					<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">shuffle off</a></li>
+					<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+					<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+				    </ul>
+				</div>
+				<div class="jp-title"><ul><li></li></ul></div>
+			</div>
+			<div class="jp-playlist"><ul><li></li></ul></div>
+			<div class="jp-no-solution">
+					<span>Required Flash</span><a href="http://get.adobe.com/flashplayer/">Flash plugin</a>.
+			</div>
+	     </div>
+        </div>
+	<!-- fin rockola reproductor -->
+	<div id="mainContent">
+		<ul>
+				<li><a href="#playList">Lista de reproducción</a></li>
+				<li><a href="#news">Novedades</a></li>
+				<li><a href="#null" id="contact">Contacto</a></li>
+				<li><a href="#null" id="upload">Subir audio</a></li>
+			</ul>
+			<!-- fin playlist -->
+			<div id="playList"></div>
+			<!-- fin news -->
+			<div id="news"><h2>Novedades</h2>{% include novedades.html %}</div>
+	</div><!-- fin mainContent -->
