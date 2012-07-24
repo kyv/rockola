@@ -41,7 +41,7 @@ a{text-decoration:none;font-weight:bold;}
 #mainContent{
     padding:1em 0.5em;
     background:#F5F5F5;
-    border:1px solid #009be3;
+    border: 0;
     border-top:none;
     -moz-border-radius:0 0 10px 10px;
 	-webkit-border-radius:0 0 10px 10px;
@@ -63,7 +63,7 @@ a{text-decoration:none;font-weight:bold;}
 #col-left div{
 	float: left
 }
-#col-centro {
+#col-centro, #content {
 	width:50%;
 	float: left;
 }
@@ -152,9 +152,7 @@ text-shadow:-1px -1px 2px #29A8FF;
 	background: #EEE;
 	padding:0.1em 1em;
 	margin:0;
-	border: solid 1px #BFBFBF;
-	border-left: solid 1px #57C0FF;
-	border-right: solid 1px #57C0FF;
+	border: 0;
 }	
 #col-right #tags{
 	padding:1em;
@@ -183,3 +181,6 @@ text-shadow:-1px -1px 2px #29A8FF;
 #col-right #tags a:hover{
 	color:#9F4240;
 }
+#footer {
+    clear: both;
+ }
