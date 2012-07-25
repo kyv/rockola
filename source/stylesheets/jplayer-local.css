@@ -1,0 +1,7 @@
+div.jp-audio,
+div.jp-video {
+  font-size: .8em;
+  border: 1px solid #ddd;
+  border-bottom: 0;
+
+}
