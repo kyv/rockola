@@ -2,13 +2,13 @@
 
 # para arrancar
 # gem install sinatra
-# ruby -rubygems myapp.rb
+# ruby -rubygems upload.rb
 
 require 'sinatra'
 require 'fileutils'
 require 'data_mapper'
 
-html_path = '/tmp/http/rockola/files/' #hard links to /srv/media
+html_path = '/tmp/http/rockola/files' #hard links to /srv/media
 #html_path = '/srv/http/rockola/files/$user' caundo tenemos sessiones
 store_path = '/tmp/media' #git-media store media files
 
@@ -18,14 +18,15 @@ class Media
   include DataMapper::Resource
   property :id,           Serial
   property :name,         String, :required => true
-  property :md5,         String, :required => true
+  property :md5,          String, :required => true
   property :type,         String, :required => true
   property :path,         String, :required => true
   property :size,         String, :required => true
 #  property :user,         String, :required => true
-  property :completed_at, DateTime
+  property :created_at, DateTime
 end
 DataMapper.finalize
+Media.auto_upgrade!
 
 post '/upload' do
 
@@ -55,4 +56,15 @@ post '/upload' do
 
 end
 
+get '/media' do
+    # get the latest 20 posts
+    @media = Media.all(:order => [ :id.desc ], :limit => 20)
+    erb :media_html
+end
 
+get '/media_json' do
+    # get the latest 20 posts
+    @media = Media.all(:order => [ :id.desc ], :limit => 20)
+    erb :media_json
+
+end
