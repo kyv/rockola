@@ -39,11 +39,11 @@ post '/upload' do
 
   # imprimir valores (debug) 
   puts "{ name: #{name}, path: #{path}, type: #{type}, md5: #{md5}, size: #{size}, submit: #{submit} }"
+
   store = store_path + "/" + md5
 
   if File.exists? store 
     'File Exists'
-
   else
   # imitar git-media
   FileUtils.cp("#{path}", store)
