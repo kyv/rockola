@@ -1,0 +1,14 @@
+%p Enter the username and password!
+%form(action="/signup" method="post")
+  %div
+    %label(for="login")Email:
+    %input#login(type="text" name="login")
+  %div
+    %label(for="password")Password:
+    %input#password(type="password" name="password")
+  %div
+    %label(for="checkpassword")Password:
+    %input#password(type="password" name="checkpassword")
+  %div
+    %input(type="submit" value="Sign Up")
+    %input(type="reset" value="Clear")

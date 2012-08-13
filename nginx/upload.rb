@@ -8,47 +8,63 @@ require 'sinatra'
 require 'fileutils'
 require 'data_mapper'
 require 'sinatra/flash'
-
+require 'bcrypt'
+require 'haml'
 
 enable :sessions
-set :username,'Bond'
-set :token,'shakenN0tstirr3d'
-set :password,'007'
-set :session_secret, "A1 sauce 1s so good you should use 1t on a11 yr st34ksssss"
 #set :dump_errors, false
 set :html_path, '/tmp/http/rockola/files' #hard links to /srv/media
-#html_path = '/srv/http/rockola/files/$user' caundo tenemos sessiones
 set :store_path, '/tmp/media' #git-media store media files
 
 # inicializar base de datos
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/rock.db")
+class User
+  include DataMapper::Resource
+  property :id,           Serial, :key => true
+  property :pass,          String, :required => true, length: 10..255 
+  property :salt,          String, :required => true 
+  property :email,         String, :required => true, :unique => true, format: :email_address 
+  property :created_at, DateTime
+  has n, :medias
+end
 
 class Media
   include DataMapper::Resource
   property :id,           Serial
   property :name,         String, :required => true
-  property :md5,          String, :required => true
+  property :md5,          String, :required => true, :key => true, :unique_index => true
   property :type,         String, :required => true
   property :path,         String, :required => true
   property :size,         String, :required => true
-#  property :user,         String, :required => true
   property :created_at, DateTime
+  belongs_to :user
 end
+
 DataMapper.finalize
 Media.auto_upgrade!
+User.auto_upgrade!
 
 helpers do
-  def admin? ; request.cookies[settings.username] == settings.token ; end
+  def admin?
+    if session[:login].nil?
+      return false
+    else
+      return true
+    end
+  end
+  def login; return session[:login]; end
   def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
   def get_params(md5) ; return Media.all(:md5 => md5); end
 end
-
 post '/upload' do
 
    unless admin?
-      set :params,  params
       redirect "/login"
    end
+
+   email = session[:login]
+   user = User.first(:email=>email)
+   id = user.id
    if defined? params['file.md5']
      md5 = params['file.md5']
      name = params['file.name']
@@ -59,25 +75,33 @@ post '/upload' do
    end
 
    store = settings.store_path + "/" + md5
+   finpath = settings.html_path + "/" + id.to_s + "/" + name
+   unless File.exists? settings.store_path
+      FileUtils.mkdir_p settings.store_path
+   end 
+   unless File.exists? "#{settings.html_path}/#{id.to_s}" 
+      FileUtils.mkdir_p "#{settings.html_path}/#{id.to_s}"
+   end 
+   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size)
    if File.exists? store 
      flash[:upload] = 'File Exists'
-     redirect to("/media/#{md5}")
+   else
+     FileUtils.cp(path, store)
+     FileUtils.ln(store, finpath)
+     flash[:upload] = 'New file: ' + name
    end
-   user = request.cookies[settings.username]
-   finpath = settings.html_path + "/" + name
-   FileUtils.cp(path, store)
-   FileUtils.ln(store, finpath)
-   #Media.create(params)
-   Media.create(name: name, md5: md5, type: type, path: finpath, size: size, user: user)
-   flash[:upload] = 'New file: ' + name
-   redirect to("/media/#{md5}")
-
-   response.set_cookie(settings.params, false)
    redirect to("/media/#{md5}")
 end
 get '/media' do
     @media = Media.all(:order => [ :id.desc ], :limit => 20)
     erb :media_html
+end
+get '/users' do
+    unless admin?
+      redirect "/login"
+    end
+    @users = User.all(:order => [ :id.desc ], :limit => 20)
+    erb :users_html
 end
 get '/media/:md5' do
     @media = get_params(params[:md5])
@@ -87,23 +111,45 @@ get '/media/json' do # ¿porque no funciona?
     @media = Media.all(:order => [ :id.desc ], :limit => 20)
     erb :media_json, :layout => false
 end
-get '/media/:md5/:json' do
+get '/media/:md5/json' do
     @media = get_params(params[:md5])
     erb :media_json, :layout => false
 end
-
 get '/logout' do 
-  response.set_cookie(settings.username, false)
+  session[:login] = nil
   redirect '/' 
 end
 get('/login'){ haml :admin }
-post '/login' do
-  if params['username']==settings.username&&params['password']==settings.password
-    response.set_cookie(settings.username,settings.token) 
-    redirect to("/")
-  else
-    "Username or Password incorrect"
-  end
+get '/makeadmin' do #create default user
+    password_salt = BCrypt::Engine.generate_salt
+    password_hash = BCrypt::Engine.hash_secret(settings.password, password_salt)
+    User.create(email: settings.login, pass: password_hash, salt: password_salt)
+    redirect '/users' 
+end
 
-  #response.set_cookie("origin", :value => "/upload", :domain => "")
+post '/login' do
+  email=params['email']
+  pass=params['password']
+  user = User.first(:email=>email)
+  salt = user.salt
+  pass_hash = BCrypt::Engine.hash_secret(params[:password], salt)
+  if User.all(:pass=>pass_hash, :email=>user.email)
+     session[:login] = user.email
+     redirect to("/")
+  else
+    'login failure'
+    'Username or Password incorrect'
+  end
+end
+get "/signup" do
+  haml :signup
+end
+post "/signup" do
+  email=params['login']
+  password_salt = BCrypt::Engine.generate_salt
+  password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
+  User.create(email: email, pass: password_hash, salt: password_salt)
+  session[:login] = email
+  flash[:login] = "Successfully created #{email}"
+  redirect '/login'
 end
