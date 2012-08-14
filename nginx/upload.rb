@@ -10,12 +10,14 @@ require 'data_mapper'
 require 'sinatra/flash'
 require 'bcrypt'
 require 'haml'
+require 'taglib'
 
 enable :sessions
 #set :dump_errors, false
 set :html_path, '/tmp/http/rockola/files' #hard links to /srv/media
 set :store_path, '/tmp/media' #git-media store media files
 
+DataMapper::Logger.new(STDOUT, :debug) #depurar db
 # inicializar base de datos
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/rock.db")
 class User
@@ -34,10 +36,24 @@ class Media
   property :name,         String, :required => true
   property :md5,          String, :required => true, :key => true, :unique_index => true
   property :type,         String, :required => true
-  property :path,         String, :required => true
+  property :path,         String, :required => true, :length => 150
   property :size,         String, :required => true
-  property :created_at, DateTime
+  property :title, 	  String, :length => 150
+  property :artist, 	  String, :length => 150
+  property :genre, 	  String, :length => 150
+  property :length, 	  String
+  property :bitrate, 	  String
+  property :channels, 	  String
+  property :created_at,   DateTime
   belongs_to :user
+end
+
+class Bara
+  include DataMapper::Resource
+  property :id,           Serial
+  property :path,         String, :required => true
+  property :playtime,     String, :required => true
+  #has n, :medias
 end
 
 DataMapper.finalize
@@ -56,6 +72,7 @@ helpers do
   def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
   def get_params(md5) ; return Media.all(:md5 => md5); end
 end
+
 post '/upload' do
 
    unless admin?
@@ -65,6 +82,7 @@ post '/upload' do
    email = session[:login]
    user = User.first(:email=>email)
    id = user.id
+
    if defined? params['file.md5']
      md5 = params['file.md5']
      name = params['file.name']
@@ -76,13 +94,17 @@ post '/upload' do
 
    store = settings.store_path + "/" + md5
    finpath = settings.html_path + "/" + id.to_s + "/" + name
+
    unless File.exists? settings.store_path
       FileUtils.mkdir_p settings.store_path
    end 
    unless File.exists? "#{settings.html_path}/#{id.to_s}" 
       FileUtils.mkdir_p "#{settings.html_path}/#{id.to_s}"
    end 
-   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size)
+
+   media_data = get_tags(finpath)
+   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, length: media_data[:length], channels: media_data[:channels], bitrate: media_data[:bitrate])
+
    if File.exists? store 
      flash[:upload] = 'File Exists'
    else
@@ -103,23 +125,29 @@ get '/users' do
     @users = User.all(:order => [ :id.desc ], :limit => 20)
     erb :users_html
 end
+
 get '/media/:md5' do
     @media = get_params(params[:md5])
     erb :media_html
 end
+
 get '/media/json' do # ¿porque no funciona?
     @media = Media.all(:order => [ :id.desc ], :limit => 20)
     erb :media_json, :layout => false
 end
+
 get '/media/:md5/json' do
     @media = get_params(params[:md5])
     erb :media_json, :layout => false
 end
+
 get '/logout' do 
   session[:login] = nil
   redirect '/' 
 end
+
 get('/login'){ haml :admin }
+
 get '/makeadmin' do #create default user
     password_salt = BCrypt::Engine.generate_salt
     password_hash = BCrypt::Engine.hash_secret(settings.password, password_salt)
@@ -141,9 +169,11 @@ post '/login' do
     'Username or Password incorrect'
   end
 end
+
 get "/signup" do
   haml :signup
 end
+
 post "/signup" do
   email=params['login']
   password_salt = BCrypt::Engine.generate_salt
@@ -152,4 +182,15 @@ post "/signup" do
   session[:login] = email
   flash[:login] = "Successfully created #{email}"
   redirect '/login'
+end
+
+def get_tags(file)
+  data = {:filename => file}
+  p file
+  TagLib::FileRef.open(file) do |file|
+    tag = file.tag
+    prop = file.audio_properties
+    data = {:title => tag.title, :artist => tag.artist, :genre => tag.genre, :length => prop.length, :bitrate => prop.bitrate, :channels => prop.channels} 
+  end
+  return data
 end
