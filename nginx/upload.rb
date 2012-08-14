@@ -11,6 +11,7 @@ require 'sinatra/flash'
 require 'bcrypt'
 require 'haml'
 require 'taglib'
+require 'json'
 
 enable :sessions
 #set :dump_errors, false
@@ -114,31 +115,35 @@ post '/upload' do
    end
    redirect to("/media/#{md5}")
 end
-get '/media' do
-    @media = Media.all(:order => [ :id.desc ], :limit => 20)
-    erb :media_html
+
+get '/search' do
+   @media = Media.all(:title.like => "%#{params[:query]}%") | Media.all(:category.like => "%#{params[:query]}%")
+   erb :search_html
 end
+
+get '/media' do
+    Media.all(:order => [ :id.desc ], :limit => 20).to_json
+end
+
 get '/users' do
     unless admin?
       redirect "/login"
     end
-    @users = User.all(:order => [ :id.desc ], :limit => 20)
-    erb :users_html
+    @users = User.all(:order => [ :id.desc ], :limit => 20).to_json
 end
 
 get '/media/:md5' do
-    @media = get_params(params[:md5])
+    @media = get_params(params[:md5]).to_json
+end
+
+get '/media/html' do # ¿porque no funciona?
+    @media = Media.all(:order => [ :id.desc ], :limit => 20)
     erb :media_html
 end
 
-get '/media/json' do # ¿porque no funciona?
-    @media = Media.all(:order => [ :id.desc ], :limit => 20)
-    erb :media_json, :layout => false
-end
-
-get '/media/:md5/json' do
+get '/media/:md5/html' do
     @media = get_params(params[:md5])
-    erb :media_json, :layout => false
+    erb :media_html
 end
 
 get '/logout' do 
