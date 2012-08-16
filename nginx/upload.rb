@@ -12,6 +12,8 @@ require 'bcrypt'
 require 'haml'
 require 'taglib'
 require 'json'
+require 'open-uri'
+require 'hpricot'
 
 enable :sessions
 #set :dump_errors, false
@@ -190,12 +192,58 @@ post "/signup" do
 end
 
 def get_tags(file)
-  data = {:filename => file}
-  p file
+  data = {}
   TagLib::FileRef.open(file) do |file|
-    tag = file.tag
+    unless file.tag.nil?
+        unless file.tag.artist.nil?
+	    data = { :artist => file.tag.artist }
+	else
+	    data = { :artist => nil }
+        end
+        unless file.tag.title.nil?
+	    data = { :title => file.tag.artist }
+	else
+	    data = { :title => nil }
+        end
+        unless file.tag.genre.nil?
+	    data = { :genre => file.tag.genre }
+	else
+	    data = { :genre => nil }
+        end
+    end
     prop = file.audio_properties
-    data = {:title => tag.title, :artist => tag.artist, :genre => tag.genre, :length => prop.length, :bitrate => prop.bitrate, :channels => prop.channels} 
+    data = {:length => prop.length, :bitrate => prop.bitrate, :channels => prop.channels} 
   end
   return data
+end
+
+get '/icestat' do
+  @url = "http://localhost.org:8000"
+  @res = ''
+  open(@url, "User-Agent" => "Ruby/#{RUBY_VERSION}",
+    "From" => "contacto@flujos.org",
+    "Referer" => "http://www.flujos.org/") { |f|
+    @res = f.read
+  }
+  doc = Hpricot(@res)
+  #@streamdata.to_json
+  #@streamdata.each do |mount|
+  @mounts = []
+  h = Hash.new
+  (doc/"/html/body/div").each do |data|
+     doc_x = Hpricot(data.inner_html)
+     mount = doc_x.search("h3").inner_html.match(/\/.*$/)
+     title = doc_x.search("//td[@class='streamdata']")[0]
+     desc = doc_x.search("//td[@class='streamdata']")[1]
+     type = doc_x.search("//td[@class='streamdata']")[2]
+     created_at = doc_x.search("//td[@class='streamdata']")[3]
+     current = doc_x.search("//td[@class='streamdata']")[-1]
+     #regex = /Genre\:\s*(.*$)/
+     #genre = doc_x.search("//td").inner_html.to_s.match(regex)
+     h = {'mount' => mount, 'title' => title, 'description' => desc, 'type' => type, 'created_at' => created_at, 'current' => current } 
+     @mounts.push(h)
+  end
+     #h = { 'title'=> mount[0], 'description' => mount[1], 'type' => mount[2], 'created_at' => mount[3], 'bitrate' => mount[4], 'listeners' => mount[5], 'peak' => mount[6], 'genre' => mount[7], 'url' => mount[8], 'song' => mount[9] }
+     #@mounts << (doc_x/"table").inner_html
+  return @mounts[1..-2].to_json
 end
