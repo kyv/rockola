@@ -44,7 +44,7 @@ class Media
   property :title, 	  String, :length => 150
   property :artist, 	  String, :length => 150
   property :genre, 	  String, :length => 150
-  property :length, 	  String
+  property :duration, 	  String
   property :bitrate, 	  String
   property :channels, 	  String
   property :created_at,   DateTime
@@ -65,7 +65,7 @@ User.auto_upgrade!
 
 helpers do
   def admin?
-    if session[:login].nil?
+    if session[:login].nil? # or if session[:login] not in db
       return false
     else
       return true
@@ -105,9 +105,6 @@ post '/upload' do
       FileUtils.mkdir_p "#{settings.html_path}/#{id.to_s}"
    end 
 
-   media_data = get_tags(finpath)
-   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, length: media_data[:length], channels: media_data[:channels], bitrate: media_data[:bitrate])
-
    if File.exists? store 
      flash[:upload] = 'File Exists'
    else
@@ -115,6 +112,10 @@ post '/upload' do
      FileUtils.ln(store, finpath)
      flash[:upload] = 'New file: ' + name
    end
+
+   media_data = get_tags(finpath)
+   genre = media_data[:genre][0..100]
+   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, duration: media_data[:duration], channels: media_data[:channels], bitrate: media_data[:bitrate])
    redirect to("/media/#{md5}")
 end
 
@@ -124,7 +125,22 @@ get '/search' do
 end
 
 get '/media' do
-    Media.all(:order => [ :id.desc ], :limit => 20).to_json
+    @data = []
+    @media = Media.all(:order => [ :id.desc ], :limit => 20)
+    @media.each do |f|
+      hash = {} # convertir class a hash, y borrar metodos no necesarios
+      f.instance_variables.each {|var| hash[var.to_s.delete("@")] = f.instance_variable_get(var) }
+      hash.delete("_repository"); hash.delete("_key");hash.delete("_collection"); hash.delete("#"); hash.delete("_persistence_state")
+      if f.name.match(/.mp3$/)
+        hash[:mp3] = "audio/#{f.user_id}/#{f.name}"
+      end
+      if f.name.match(/.og(g|a)$/)
+        hash[:oga] = "audio/#{f.user_id}/#{f.name}"
+      end
+      @data.push(hash)
+
+    end
+    @data.to_json
 end
 
 get '/users' do
@@ -194,25 +210,18 @@ end
 def get_tags(file)
   data = {}
   TagLib::FileRef.open(file) do |file|
-    unless file.tag.nil?
-        unless file.tag.artist.nil?
-	    data = { :artist => file.tag.artist }
-	else
-	    data = { :artist => nil }
-        end
-        unless file.tag.title.nil?
-	    data = { :title => file.tag.artist }
-	else
-	    data = { :title => nil }
-        end
-        unless file.tag.genre.nil?
-	    data = { :genre => file.tag.genre }
-	else
-	    data = { :genre => nil }
-        end
-    end
     prop = file.audio_properties
-    data = {:length => prop.length, :bitrate => prop.bitrate, :channels => prop.channels} 
+    tag = file.tag
+    data = {:duration => prop.length, :bitrate => prop.bitrate, :channels => prop.channels}
+    unless tag.artist.nil?
+        data[:artist] = tag.artist
+    end
+    unless tag.title.nil?
+        data[:title] = tag.title
+    end
+    unless tag.genre.nil?
+        data[:genre] = tag.genre
+    end
   end
   return data
 end
