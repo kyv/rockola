@@ -172,6 +172,19 @@ $(function(){
 /*
  * Funcion encargada de cargar la lista de resproduccion
  */
+// tag cloud
+tag_list = $.ajax({
+	   'url' : '/tags',
+	   dataType: 'json',
+           success: function(json){
+                   var word_list = '[';
+                   $.each(json, function(key, value){
+                
+		   word_list += '{text: '+key+', weight: '+value+'},'
+	      });
+	   }
+	});
+
 cargar_lista = function (lista_url){
 	$.ajax({
 		url: lista_url,

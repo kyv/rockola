@@ -47,6 +47,7 @@ class Media
   property :duration, 	  String
   property :bitrate, 	  String
   property :channels, 	  String
+  property :tags, 	  String, :length => 100
   property :created_at,   DateTime
   belongs_to :user
 end
@@ -85,7 +86,6 @@ post '/upload' do
    email = session[:login]
    user = User.first(:email=>email)
    id = user.id
-
    if defined? params['file.md5']
      md5 = params['file.md5']
      name = params['file.name']
@@ -114,16 +114,27 @@ post '/upload' do
    end
 
    media_data = get_tags(finpath)
-   genre = media_data[:genre][0..100]
-   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, duration: media_data[:duration], channels: media_data[:channels], bitrate: media_data[:bitrate])
-   redirect to("/media/#{md5}")
+   genre = media_data[:genre][0..50]
+   media_tags = "#{media_data[:artist]}, #{genre}"
+   p media_tags
+   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, duration: media_data[:duration], channels: media_data[:channels], bitrate: media_data[:bitrate], tags: media_tags)
+   redirect to("/media")
 end
 
 get '/search' do
    @media = Media.all(:title.like => "%#{params[:query]}%") | Media.all(:category.like => "%#{params[:query]}%")
    erb :search_html
 end
-
+get '/tags' do
+    tags = Hash.new(0)
+    Media.all(:order => [ :id.desc ]).each do |media|
+       media.tags.split(',').each do |tag|
+          tag = tag.strip
+          tags[tag] += 1
+       end
+    end
+    return tags.to_json
+end
 get '/media' do
     @data = []
     @media = Media.all(:order => [ :id.desc ], :limit => 20)
