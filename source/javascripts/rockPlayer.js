@@ -31,7 +31,7 @@ $(function(){
             dataType: 'json',
             success: function(json){
                 $.each(json, function(key, value){
-                    $("#rockolites").append('<li><a href="http://radio.flujos.org:8000'+value.mount+'">'+value.title+'</a> <span>'+value.current+'</span> </li>');
+                    $("#rockolites").append('<li><a href="http://radio.flujos.org:8000'+value.mount+'" class="oga" title="'+value.title+'">'+value.title+'</a> <span>'+value.current+'</span> </li>');
                 });
             }
         });
