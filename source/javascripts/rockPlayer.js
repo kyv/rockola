@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('javascripts/lista_reproduccion.js');
+	cargar_lista('media');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({
@@ -25,6 +25,16 @@ $(function(){
 				swfPath: "js",
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
+        //llenar rockolites lista con radios en vivos
+        $.ajax({
+            'url' : '/icestat',
+            dataType: 'json',
+            success: function(json){
+                $.each(json, function(key, value){
+                    $("#rockolites").append('<li><a href="http://radio.flujos.org:8000'+value.mount+'">'+value.title+'</a> <span>'+value.current+'</span> </li>');
+                });
+            }
+        });
 	//Cargamos el 1er audio en la lista de reproducción.
 	$('ul.rockolites li a.oga').click(function() {
 		rockola.player.setPlaylist([
