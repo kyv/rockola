@@ -172,9 +172,15 @@ text-shadow:-1px -1px 2px #29A8FF;
 	-webkit-border-radius:10px;
 	-o-border-radius:10px;
 	border-radius:10px;
+	list-style: none;
+}
+#col-right #tags li {
+ display: inline;
+  text-transform: lowercase;
+  padding: 0 1em;
 }
 #col-right #tags a {
-	position:absolute;
+	position:relative;
 	color:#0A7CF0;
 	text-shadow:1px 1px 1px #FFF,-1px -1px 0 #aaa;
 }

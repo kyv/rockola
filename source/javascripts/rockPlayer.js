@@ -25,18 +25,22 @@ $(function(){
 				swfPath: "js",
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
-        //llenar rockolites lista con radios en vivos
-        $.ajax({
-            'url' : '/icestat',
-            dataType: 'json',
-            success: function(json){
+           $.ajax({
+           'url' : '/tags',
+           dataType: 'json',
+           success: function(json){
                 $.each(json, function(key, value){
-                    $("#rockolites").append('<li><a href="http://radio.flujos.org:8000'+value.mount+'" class="oga" title="'+value.title+'">'+value.title+'</a> <span>'+value.current+'</span> </li>');
-                });
-            }
+		    var li = $("<li>");
+			$("<a>").text(key).attr({title:"See all pages tagged with " + key, href:"tags/" + key }).appendTo(li);
+
+                    li.children().css("fontSize", (value / 10 < 1) ? value / 10 + 1 + "em": (value / 10 > 2) ? "2em" : value / 10 + "em");
+                    li.appendTo('#tags');
+              });
+           }
         });
+
 	//Cargamos el 1er audio en la lista de reproducción.
-	$('ul.rockolites li a.oga').click(function() {
+	$('ul#rockolites li a.oga').click(function() {
 		rockola.player.setPlaylist([
 			{
 				title:$(this).text(),
@@ -45,7 +49,18 @@ $(function(){
 			}]);
 			return false;
 		});
-	
+	// upload form
+        $.ajax({
+            'url' : '/icestat',
+            dataType: 'json',
+            success: function(json){
+                $.each(json, function(key, value){
+                    $("#rockolites").append('<li><a href="http://radio.flujos.org:8000'+value.mount+'" class="oga">'+value.title+'</a> <span>'+value.current+'</span> </li>');
+                });
+            }
+
+        });
+
 	$('#playList li').click(function() {
 		rockola.setTrack( $(this).attr('id').match(/[0-9]+$/)  );
 	});
@@ -173,17 +188,6 @@ $(function(){
  * Funcion encargada de cargar la lista de resproduccion
  */
 // tag cloud
-tag_list = $.ajax({
-	   'url' : '/tags',
-	   dataType: 'json',
-           success: function(json){
-                   var word_list = '[';
-                   $.each(json, function(key, value){
-                
-		   word_list += '{text: '+key+', weight: '+value+'},'
-	      });
-	   }
-	});
 
 cargar_lista = function (lista_url){
 	$.ajax({
