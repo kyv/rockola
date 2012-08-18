@@ -37,7 +37,8 @@ a{text-decoration:none;font-weight:bold;}
 .odd{   
 	border: 1px dashed #ddd;
 }
-
+div.jp-audio,
+div.jp-video {border: 0px!important}
 #mainContent{
     padding:1em 0.5em;
     background:#F5F5F5;
@@ -55,9 +56,8 @@ a{text-decoration:none;font-weight:bold;}
 
 #col-left, #col-right{
 	float: left;
-	min-width:15em;
-	width:20%;
-	margin: 10px;
+	width:15%;
+	margin: 5px;
 	padding-top:1em;
 }
 #col-left div{
@@ -134,7 +134,7 @@ text-shadow:-1px -1px 2px #29A8FF;
 
 #col-right {
 	float:right;
-	margin-right: 50px;
+	margin-right: 10px;
 }
 #col-right div.ui-widget-header{
 	padding:0.8em;
