@@ -55,13 +55,18 @@ div.jp-video {border: 0px!important}
 }
 
 #col-left, #col-right{
+    font-size: 80%;
 	float: left;
-	width:15%;
+	width:20%;
 	margin: 5px;
 	padding-top:1em;
 }
 #col-left div{
 	float: left
+}
+#col-centro {
+	width:50%;
+        margin: 0px auto;
 }
 #col-centro, #content {
 	width:50%;
