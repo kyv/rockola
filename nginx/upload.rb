@@ -122,8 +122,15 @@ post '/upload' do
 end
 
 get '/search' do
-   @media = Media.all(:title.like => "%#{params[:query]}%") | Media.all(:category.like => "%#{params[:query]}%")
-   erb :search_html
+   p params
+   if params[:artist].nil?
+      params[:artist] = 'xxx'
+   end
+   if params[:title].nil?
+      params[:title] = 'xxx'
+   end
+   @media = Media.all(:title.like => "%#{params[:title]}%") | Media.all(:artist.like => "%#{params[:artist]}%")
+   @media.to_json
 end
 get '/tags' do
     tags = Hash.new(0)
