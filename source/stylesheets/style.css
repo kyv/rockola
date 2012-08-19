@@ -2,6 +2,11 @@ html{
 	margin: 0;
 	padding: 0;
 	font-family:Verdana,Arial,sans-serif;
+        background: transparent url('../images/00-navegacion_cango_en_playa.png') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
 }
 
 body {
@@ -56,22 +61,51 @@ div.jp-video {border: 0px!important}
 
 #col-left, #col-right{
     font-size: 80%;
-	float: left;
-	width:20%;
-	margin: 5px;
-	padding-top:1em;
+    float: left;
+    width:20%;
+    margin: 5px;
+    padding-top:1em;
+    position: fixed;
 }
-#col-left div{
-	float: left
+#col-right{right:0; }
+
+}
+#col-left ul {
+	padding:1em;
+	border:1px solid #AAA;
+	border-bottom:0.1em solid #666;
+	background:#E9E9E9;
+	background-repeat: repeat-x;
+	background-image: -moz-linear-gradient(top, #E9E9E9, #AAA);
+	background-image: -ms-linear-gradient(top, #E9E9E9, #AAA);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#E9E9E9), to(#AAA));
+	background-image: -webkit-linear-gradient(top, #E9E9E9, #AAA);
+	background-image: -o-linear-gradient(top, #E9E9E9, #AAA);
+	background-image: linear-gradient(top, #E9E9E9, #AAA);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#E9E9E9', endColorstr='#AAA',GradientType=0 );
+	-moz-border-radius:10px;
+	-webkit-border-radius:10px;
+	-o-border-radius:10px;
+	border-radius:10px;
+
+}
+#col-left ul {
+	list-style-position:inside;
 }
 #col-centro {
 	width:50%;
         margin: 0px auto;
+        position: relative;
+  	left: 25%;	
 }
 #col-centro, #content {
 	width:50%;
 	float: left;
 }
+#col-centro h2 {
+  margin:0;
+}
+
 #col-centro #playList ul {
 	width:100%;
 	margin:0;
@@ -159,9 +193,9 @@ text-shadow:-1px -1px 2px #29A8FF;
 	margin:0;
 	border: 0;
 }	
-#col-right #tags{
+#tags, #rockolites, #actions {
+	list-style-position:inside;
 	padding:1em;
-	height:10em;
 	border:1px solid #AAA;
 	border-bottom:0.1em solid #666;
 	background:#E9E9E9;
@@ -177,19 +211,22 @@ text-shadow:-1px -1px 2px #29A8FF;
 	-webkit-border-radius:10px;
 	-o-border-radius:10px;
 	border-radius:10px;
-	list-style: none;
+	width: 180px;
+        overflow: hidden;
 }
-#col-right #tags li {
+#tags {list-style: none;
+	height:10em;}
+#tags li {
  display: inline;
   text-transform: lowercase;
   padding: 0 1em;
 }
-#col-right #tags a {
+#tags a {
 	position:relative;
 	color:#0A7CF0;
 	text-shadow:1px 1px 1px #FFF,-1px -1px 0 #aaa;
 }
-#col-right #tags a:hover{
+#tags a:hover{
 	color:#9F4240;
 }
 #footer {
