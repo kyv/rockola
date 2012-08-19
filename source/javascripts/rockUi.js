@@ -56,8 +56,19 @@ $("<marquee>Rockalateca Virtual al Alcanze de tus Digitoz</marquee>").fadeIn(200
 				width:400,
 				modal: true,
 				buttons: {
-					"Enviar": function() {
-						$( this ).dialog( "close" );
+				   "Enviar": function() {
+					var div = $('<div>Para poder organizar la Rockolateca utilizamos etiquetas. Minimamente el audio debe de tener titulo, artista y genero. Pero las etiquetas son libres, por ejemplo el region de origin del audio tambien seria un etiqueta valida.');
+
+					$('#formUploadFile').ajaxSubmit({
+					dataType: 'json',
+					success: function(json) { 
+					   $.each(json, function(key, value){
+					   div.append('<li>Nombre: '+ value.name +'</li><li>Tipo: '+ value.type +'</li><li>Bits: '+ value.size +'</li><form id=formUploadFile action="update" method="post"></br>Title: <input type="text" name="title" value="'+value.title+'"/></br>Artist: <input type="text" name="artist" value="'+value.artist+'"/></br>Tags: <input type="text" name="tags" value="'+value.tags+'"/><input type="hidden" name="id" value="'+value.id+'" ></form></div>');
+                			   $('#uploadform').replaceWith(div); 
+
+            				  });
+					 }
+            				 });
 					},
 					"Cancelar": function() {
 						$( this ).dialog( "close" );
@@ -65,7 +76,7 @@ $("<marquee>Rockalateca Virtual al Alcanze de tus Digitoz</marquee>").fadeIn(200
 				}
 			});
 		$('#ventanaFlotante').empty();
-		$('<p>Archivo: <input type="file" name="archivo" id="formUploadFile" /></p>').fadeIn(1500).appendTo('#ventanaFlotante');
+		$('<div id="uploadform"><form id=formUploadFile action="upload" method="post">Archivo: <input type="file" name="archivo" id="inputUploadFile" /></form></div>').fadeIn(1500).appendTo('#ventanaFlotante');
 		return false;
 	}
 	return true;

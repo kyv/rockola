@@ -76,22 +76,33 @@ helpers do
   def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
   def get_params(md5) ; return Media.all(:md5 => md5); end
 end
-
+post '/update' do
+   p params
+   unless admin?
+      redirect "/login"
+   end
+   title = params[:title]
+   artist= params[:artist]
+   genre = params[:genre]
+   tags = params[:tags]
+   id = params[:id]
+   media = Media.first(id)
+   media.update( title: title, artist: artist, genre: genre, tags: tags)
+end
 post '/upload' do
 
    unless admin?
       redirect "/login"
    end
-
    email = session[:login]
    user = User.first(:email=>email)
    id = user.id
-   if defined? params['file.md5']
-     md5 = params['file.md5']
-     name = params['file.name']
-     type = params['file.content_type']
-     path = params['file.path']
-     size = params['file.size']
+   if defined? params['archivo.md5']
+     md5 = params['archivo.md5']
+     name = params['archivo.name']
+     type = params['archivo.content_type']
+     path = params['archivo.path']
+     size = params['archivo.size']
      submit = params['submit']
    end
 
@@ -114,11 +125,20 @@ post '/upload' do
    end
 
    media_data = get_tags(finpath)
-   genre = media_data[:genre][0..50]
+   if media_data[:genre].nil?
+	genre = 'nil'
+   else
+        genre = media_data[:genre][0..50]
+   end
+   if media_data[:artist].nil?
+	media_data[:artist] = 'nil'
+   end
+   if media_data[:title].nil?
+	media_data[:title] = 'nil'
+   end
    media_tags = "#{media_data[:artist]}, #{genre}"
-   p media_tags
    Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, duration: media_data[:duration], channels: media_data[:channels], bitrate: media_data[:bitrate], tags: media_tags)
-   redirect to("/media")
+   redirect to("/media/#{md5}")
 end
 
 get '/search' do
