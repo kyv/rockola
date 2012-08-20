@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('http://flujos.org/media');
+	cargar_lista('http://rockola.flujos.org/media');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({
@@ -26,7 +26,7 @@ $(function(){
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
            $.ajax({
-           'url' : '/tags',
+           'url' : 'http://rockola.flujos.org/tags',
            dataType: 'json',
            success: function(json){
                 $.each(json, function(key, value){
@@ -51,7 +51,7 @@ $(function(){
 		});
 	// upload form
         $.ajax({
-            'url' : '/icestat',
+            'url' : 'http://rockola.flujos.org/icestat',
             dataType: 'json',
             success: function(json){
                 $.each(json, function(key, value){
