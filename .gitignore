@@ -1,4 +1,6 @@
 media/*
+_config.yml
+Rakefile
 _site
 .DS_Store
 .sass-cache
