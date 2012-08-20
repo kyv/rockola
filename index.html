@@ -1,1 +1,170 @@
-My Octopress Page is coming soon &hellip;
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Rockolateka Radiofonica</title>
+  <meta name="author" content="Cheves Stuart">
+
+  
+  <meta name="description" content="">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://kyv.github.com/rockola/">
+  <link href="/favicon.png" rel="icon">
+	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/jquery-ui-1.8.20.custom.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/style.css"/>
+	<link rel="stylesheet" type="text/css" media="all" href="/javascripts/Jplayer.skin/jplayer.blue.monday.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/jplayer-local.css" />
+	<script type="text/javascript" src="/javascripts/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery-ui-1.8.20.custom.min.js"></script>
+	<script type="text/javascript" src="/javascripts/rockplayer_core.js"></script>
+   	<script type="text/javascript" src="/javascripts/jquery.jplayer.js"></script>
+	<script type="text/javascript" src="/javascripts/jplayer.playlist.js"></script>
+	<script type="text/javascript" src="/javascripts/rockPlayer.js"></script>
+	<script type="text/javascript" src="/javascripts/rockUi.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery.form.js"></script>
+  <link href="/atom.xml" rel="alternate" title="Rockolateka Radiofonica" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body>
+
+<div id="primary" role="main">
+
+    <div id="col-left">
+	<h2>Emisiones en Vivo</h2>
+	<ul id="rockolites"></ul>
+
+	<h2>Etiquetas:</h2>
+	<ul id="tags">
+	</ul>
+<span id='w3c' style='bottom:0px'><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a></span>
+</div><!-- fin col izquierda -->
+
+
+    <div id="col-centro">
+    		<div id="rockola" class="jp-video jp-video-270p">
+	    <div class="jp-type-playlist">
+		<div id="jquery_jplayer_N" class="jp-jplayer"></div>
+			<div class="jp-gui">
+				<div class="jp-interface">
+				    <div class="jp-progress">
+			  		<div class="jp-seek-bar">
+					    <div class="jp-play-bar"></div>
+					</div>
+				    </div>
+				<div class="jp-current-time"></div>
+				<div class="jp-duration"></div>
+				<div class="jp-controls-holder">
+				    <ul class="jp-controls">
+				    	<li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+				    	<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+				    	<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+				    	<li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+				    	<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+				    	<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+				    	<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+				    	<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+				    </ul>
+				    <div class="jp-volume-bar">
+				         <div class="jp-volume-bar-value"></div>
+				    </div>
+				    <ul class="jp-toggles">
+					<li><a href="javascript:;" class="jp-full-screen" tabindex="1" title="full screen">full screen</a></li>
+					<li><a href="javascript:;" class="jp-restore-screen" tabindex="1" title="restore screen">restore screen</a></li>
+					<li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">shuffle</a></li>
+					<li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">shuffle off</a></li>
+					<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+					<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+				    </ul>
+				</div>
+				<div class="jp-title"><ul><li></li></ul></div>
+			</div>
+			<div class="jp-playlist"><ul><li></li></ul></div>
+			<div class="jp-no-solution">
+					<span>Required Flash</span><a href="http://get.adobe.com/flashplayer/">Flash plugin</a>.
+			</div>
+	     </div>
+        </div>
+	<!-- fin rockola reproductor -->
+	<div id="mainContent">
+		<ul>
+				<li><a href="#playList">Lista de reproducción</a></li>
+				<li><a href="#news">Novedades</a></li>
+				<li><a href="#null" id="contact">Contacto</a></li>
+				<li><a href="#null" id="upload">Subir audio</a></li>
+			</ul>
+			<!-- fin playlist -->
+			<div id="playList"></div>
+			<!-- fin news -->
+			<div id="news"><h2>Novedades</h2>	<section class="archive">
+
+		<header class="archive-header">
+			<h1 class="archive-title"></h1>
+			<p class="archive-intro"></p>
+		</header><!-- .post-title -->
+
+		<div class="archive-content">
+			<ul class="posts">
+
+				
+			
+				  <li><span>09 Jul 2012</span> &raquo; <a href="/blog/2012/07/09/Normalizacion_R128/">Normalización de volumen</a></li>
+
+				
+			
+				  <li><span>08 Jul 2012</span> &raquo; <a href="/blog/2012/07/08/mpd_la_lista_jamas/">Mpd la lista jamas</a></li>
+
+				
+			
+				  <li><span>07 Jul 2012</span> &raquo; <a href="/blog/2012/07/07/Radio_por_internet_con_archlinux/">Transmitiendo con arch</a></li>
+
+				
+			  </ul>
+		</div><!-- .post-content -->
+	</section><!-- .post-->
+</div>
+</div>
+	</div><!-- fin mainContent -->
+
+    </div><!-- fin col central -->
+
+    <!-- inicio columna derecha -->
+<div id="col-right">
+	
+	<div id="Formbuscar" class="ui-widget-header"><input type="text" value="Buscar" name='Formbuscar' /></div>
+		<h2>Acciones</h2>
+	<ul id="actions">
+		<li><a href="javascript:;" id="playlist-setPlaylist-audio-mix">Cargar Lista</a></li>
+		<li><a href="javascript:;" id="remover">remover_cancion</a></li>
+		<li><a href="javascript:;" id="select-2">select-2</a></li>
+	</ul>
+
+
+</div><!-- fin col derecha -->
+
+
+
+</div> 
+
+	<footer id="footer">
+		<div class="inner">
+			</p>
+		</div>
+	</footer>
+
+<!-- ventana flotante -->
+<div id="ventanaFlotante" class='dialog'>&nbsp;</div>
+
+</body>
+</html>

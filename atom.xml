@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Rockolateka Radiofonica]]></title>
+  <link href="http://kyv.github.com/rockola/atom.xml" rel="self"/>
+  <link href="http://kyv.github.com/rockola/"/>
+  <updated>2012-08-19T22:17:49-05:00</updated>
+  <id>http://kyv.github.com/rockola/</id>
+  <author>
+    <name><![CDATA[Cheves Stuart]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Normalización de volumen]]></title>
+    <link href="http://kyv.github.com/rockola/blog/2012/07/09/Normalizacion_R128/"/>
+    <updated>2012-07-09T00:00:00-05:00</updated>
+    <id>http://kyv.github.com/rockola/blog/2012/07/09/Normalizacion_R128</id>
+    <content type="html"><![CDATA[<h1>Normalización de volumen en Linux</h1>
+
+<p><a href='http://tech.ebu.ch/loudness'><img src="http://tech.ebu.ch/webdav/site/tech/shared/images/logo_128_80px.jpg" class="right"/></a></p>
+
+<p>Hace unos años la industria de producción audiofonica lanzo un nuevo estándar con el objetivo de revolucionar el &#8216;volumen de audio&#8217;. Producción audiofonica ha deteriorado sobre los años en un competición de amplitud. Esta competición ha sido reforzado, de alguna manera, tanto por la técnica que si ha utilizado para medir volumen, a decir, la medición de picos, como por la técnica que si ha ocupado para la normalización, a decir, el compresión.</p>
+
+<p>La problema de la volumen, entonces, tradicionalmente si ha resuelto con el sacrificio del rango dinámico. La [[propuesta del EBU r128|http://www.producción.com/articulo.php?a=1801]], ya adoptado por muchos fabricantes de mezcladora en la forma del <em>modo ebu</em>, es de adoptar un volumen estándar (-24db), cuantificación del volumen media y cuantificación del rango dinámica, permitiendo que ahora mezclamos en  base del volumen real de nuestro audio, y ya no en base te únicamente los picos.</p>
+
+<p>Todo eso viene mejor explicado en un [[vídeo de seminario en que fui prepuesta el nuevo estándar|http://www.youtube.com/watch?v=OF4nWo5zJ2I&amp;feature=relmfu]].</p>
+
+<h2>Linux</h2>
+
+<p>En cuanto que toca a Linux, hemos encontrado dos implementaciones. Uno es [[r128gain|http://www.hydrogenaudio.org/forums/index.php?showtopic=85978]], que es un implementación de [[blog/replaygain]]. Asi que funciona con cualcuier reproductor que entende los etiquetas de replaygain, pero en lugar de medir nivel pico utiliza el algoritmo descrito por el r128 y antecedentes para determinar la ganancia aplicado a cada audio. La otra es el [[ebumeter|http://kokkinizita.linuxaudio.org/linuxaudio/ebumeter-doc/quickguide.html]], para visualizar los adiós según el mismo algoritmo.</p>
+
+<p>[[!tag r128 replaygain normalización jackd ebumeter]]</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mpd la lista jamas]]></title>
+    <link href="http://kyv.github.com/rockola/blog/2012/07/08/mpd_la_lista_jamas/"/>
+    <updated>2012-07-08T00:00:00-05:00</updated>
+    <id>http://kyv.github.com/rockola/blog/2012/07/08/mpd_la_lista_jamas</id>
+    <content type="html"><![CDATA[<h1>Lista de reproduccion que acaba jamas</h1>
+
+<p>Una forma sencilla de hacer que la lista de reproduccion no acaba es llamar a un script al momento en que nuestro lista de reproduccion tiene menos que 2 rolas. Con mpdcron, podemos utilizar el siguiente codigo en en nuestro ~/.mpdcron/hooks/player:</p>
+
+<pre><code>if \[[ $(mpc playlist|wc -l) &lt; 2 ]] ; then
+    mpd_random_add 1
+    mpc play    # lista vacia
+fi
+</code></pre>
+
+<p>El &#8216;play&#8217; ayuda en el caso de una lista vacia, para dar un empujon al reproductor. Nuesra preferencia es mantener el codigo para la agregar las rolas aparte, eso nos permite agregar 3 canciones desde la linea de comandos.</p>
+
+<pre><code>mpd_random_add 3
+</code></pre>
+
+<p>El codigo original si encuentra en el [[wiki de mpd|http://mpd.wikia.com/wiki/Hack:addrandom]], aqui ponemos nuestro refrito. En cualcuiera de las formas, pega el codigo en algun lugar en su $PATH, por ejemplo, <em>/usr/local/bin</em>, y llamalo <em>mpd_random_add</em>:</p>
+
+<pre><code>#!/bin/bash
+# Agregar 'numero' de canciones aleatoriamente de la biblioteca. 
+USAGE="Usage: `basename $0` [numero]"
+[ ${#} -eq 0 ] &amp;&amp; { echo -e "$USAGE" &gt;&amp;2; exit 1; }
+
+var0=0
+LIMIT=$1
+while [ "$var0" -lt "$LIMIT" ]
+do
+ mpc listall | sed -n $[RANDOM % $(mpc stats | grep Songs | awk '{print $2}')+1]p | mpc add
+ var0=`expr $var0 + 1` 
+done
+echo
+exit 0
+</code></pre>
+
+<p>y para ser completos o olvidamos hacerlo ejecutable:</p>
+
+<pre><code>chmod +x /usr/local/bin/mpd_random_add 
+</code></pre>
+
+<p>[[!tag mpdcron mpd hacks automatización]]</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Transmitiendo con arch]]></title>
+    <link href="http://kyv.github.com/rockola/blog/2012/07/07/Radio_por_internet_con_archlinux/"/>
+    <updated>2012-07-07T00:00:00-05:00</updated>
+    <id>http://kyv.github.com/rockola/blog/2012/07/07/Radio_por_internet_con_archlinux</id>
+    <content type="html"><![CDATA[<h2>Transmitiendo con archlinux, MPD, mpd-hora, darkice y pulseaudio</h2>
+
+<p>Damos 2 salidas a [[mpd|http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki]], uno a las bocinas y otro a [[darkice|http://code.google.com/p/darkice/]]. Eso nos permite monitorearlos por seperados, o inclusive bajar el volumen de un salida para unicamente dejar abierto la salida al internet.</p>
+
+<p>[[!img images/pulse-mpd.png alt=&#8221;pulseaudio - mpd&#8221; size=&#8221;426x266&#8221; class=&#8221;left&#8221;]]</p>
+
+<p>En el fondo [[ncmpc|http://mpd.wikia.com/wiki/Client:Ncmpc]] con nuestra barra de programacion y mas al fundo nuestro transmission como presentado en <a href="http://radio.flujos.org">http://radio.flujos.org</a>.</p>
+
+<p>[[!img images/ncmpc-hora.png alt=&#8221;ncmpc&#8221; class=&#8221;left&#8221;]]</p>
+
+<p>Utilizamos [[mpd-hora|https://github.com/kyv/mpd-hora]] para automatizar locucion de la hora.</p>
+
+<p>En el ultimo imagen vemos los niveles de grabacion, la entrada a darkice, lo cual es la mescla de microfono y musica reproducida.</p>
+
+<p>[[!img images/pulse-darkice.png alt=&#8221;pulseaudio - darkice&#8221; size=&#8221;400x240&#8221; class=&#8221;right&#8221;]]</p>
+
+<h3>¿Como?</h3>
+
+<p>Asumimos que su sistema esta parecido a la nuestra, tiene un configuraion de pulseaudio en /etc/pulse/default, su darkice es version 1.1 o mayor y su configuracion si encuentra en /etc/darkice.cfg</p>
+
+<h4>Pulse</h4>
+
+<p>Creemos una salida virtual para en pulseaudio. Eso nos permite luego mandar cualcuier audio, o sea desde el microfono o de un reproductor, a darkice.</p>
+
+<pre><code>load-module module-null-sink sink_name=darkice sink_properties="device.description='Darkice Sink'"
+load-module module-loopback source="alsa_input.pci-0000_00_1b.0.analog-stereo" sink="darkice"
+</code></pre>
+
+<p>En el ejemplo, la entrada del tarjeta de audio es &#8216;alsa_input.pci-0000_00_1b.0.analog-stereo&#8217;. puede ser que varia en su sistema. averigua que entradas de audio estan disponibles con:</p>
+
+<pre><code>pactl list|grep alsa_input
+</code></pre>
+
+<h4>Darkice</h4>
+
+<p>En el seccion [input] de darkice tendremos algo parecido al siguente:</p>
+
+<pre><code>[input]
+device          = pulseaudio  
+sampleRate      = 22050
+bitsPerSample   = 16
+channel         = 2
+paSourceName = darkice.monitor
+</code></pre>
+
+<h4>MPD</h4>
+
+<p>Y ultimamente, si queremos dedicar una salida de mpd al radio por internet (para luego dedicar otra a sonido local, por ejemplo) agregamos un seccion &#8216;output&#8217; al configuracion de mpd:</p>
+
+<pre><code>audio_output {
+        type            "pulse"
+        name            "MPD-Darkice"
+        sink            "darkice" 
+}
+</code></pre>
+
+<p>[[!tag flujos mpd darkice pulseaudio]]</p>
+]]></content>
+  </entry>
+  
+</feed>
