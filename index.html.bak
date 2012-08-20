@@ -5,14 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Rockolateka Radiofonica</title>
+  <title>Rockolateka Radiofonica</title>
   <meta name="author" content="Cheves Stuart">
 
   
-  <meta name="description" content="Blog Archive 2012 Normalización de volumen
-Jul 09 2012 Mpd la lista jamas
-Jul 08 2012 Transmitiendo con arch
-Jul 07 2012 Recent Posts Normalización &hellip;">
+  <meta name="description" content=" Blog Archives Recent Posts Normalización de volumen Mpd la lista jamas Transmitiendo con arch ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +18,7 @@ Jul 07 2012 Recent Posts Normalización &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://kyv.github.com/rockola/blog/archives/">
+  <link rel="canonical" href="http://kyv.github.com/rockola/.bak">
   <link href="/rockola/favicon.png" rel="icon">
   <link href="/rockola/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/rockola/javascripts/modernizr-2.0.js"></script>
@@ -65,56 +62,15 @@ Jul 07 2012 Recent Posts Normalización &hellip;">
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <div class="blog-index">
   
-  <header>
-    <h1 class="entry-title">Blog Archive</h1>
+  
+  <div class="pagination">
     
-  </header>
-  
-  <div id="blog-archives">
-
-
-
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/rockola/blog/2012/07/09/Normalizacion_R128/">Normalización de volumen</a></h1>
-<time datetime="2012-07-09T00:00:00-05:00" pubdate><span class='month'>Jul</span> <span class='day'>09</span> <span class='year'>2012</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/rockola/blog/2012/07/08/mpd_la_lista_jamas/">Mpd la lista jamas</a></h1>
-<time datetime="2012-07-08T00:00:00-05:00" pubdate><span class='month'>Jul</span> <span class='day'>08</span> <span class='year'>2012</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/rockola/blog/2012/07/07/Radio_por_internet_con_archlinux/">Transmitiendo con arch</a></h1>
-<time datetime="2012-07-07T00:00:00-05:00" pubdate><span class='month'>Jul</span> <span class='day'>07</span> <span class='year'>2012</span></time>
-
-
-</article>
-
+    <a href="/rockola/blog/archives">Blog Archives</a>
+    
+  </div>
 </div>
-
-  
-</article>
-
-</div>
-
 <aside class="sidebar">
   
     <section>
@@ -143,7 +99,6 @@ Jul 07 2012 Recent Posts Normalización &hellip;">
 
   
 </aside>
-
 
     </div>
   </div>

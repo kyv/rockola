@@ -1,5 +1,8 @@
 
 <!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
   <title>Rockolateka Radiofonica</title>
@@ -17,18 +20,10 @@
   
   <link rel="canonical" href="http://kyv.github.com/rockola/.octo">
   <link href="/rockola/favicon.png" rel="icon">
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/stylesheets/jquery-ui-1.8.20.custom.css" />
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/stylesheets/style.css"/>
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/javascripts/Jplayer.skin/jplayer.blue.monday.css" />
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/stylesheets/jplayer-local.css" />
-	<script type="text/javascript" src="/rockola/javascripts/jquery-1.7.2.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/jquery-ui-1.8.20.custom.min.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/rockplayer_core.js"></script>
-   	<script type="text/javascript" src="/rockola/javascripts/jquery.jplayer.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/jplayer.playlist.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/rockPlayer.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/rockUi.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/jquery.form.js"></script>
+  <link href="/rockola/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/rockola/javascripts/modernizr-2.0.js"></script>
+  <script src="/rockola/javascripts/ender.js"></script>
+  <script src="/rockola/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="Rockolateka Radiofonica" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -39,44 +34,13 @@
 </head>
 
 <body   >
-  <header role="banner"><!DOCTYPE html>
-<head>
-  <meta charset="utf-8">
-  <title>Rockolateka Radiofonica</title>
-  <meta name="author" content="Cheves Stuart">
-
+  <header role="banner"><hgroup>
+  <h1><a href="/rockola/">Rockolateka Radiofonica</a></h1>
   
-  <meta name="description" content=" Blog Archives Recent Posts Normalización de volumen Mpd la lista jamas Transmitiendo con arch ">
+    <h2>Una Rockolateka para pasar el ocio.</h2>
   
+</hgroup>
 
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://kyv.github.com/rockola/.octo">
-  <link href="/rockola/favicon.png" rel="icon">
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/stylesheets/jquery-ui-1.8.20.custom.css" />
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/stylesheets/style.css"/>
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/javascripts/Jplayer.skin/jplayer.blue.monday.css" />
-	<link rel="stylesheet" type="text/css" media="all" href="/rockola/stylesheets/jplayer-local.css" />
-	<script type="text/javascript" src="/rockola/javascripts/jquery-1.7.2.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/jquery-ui-1.8.20.custom.min.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/rockplayer_core.js"></script>
-   	<script type="text/javascript" src="/rockola/javascripts/jquery.jplayer.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/jplayer.playlist.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/rockPlayer.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/rockUi.js"></script>
-	<script type="text/javascript" src="/rockola/javascripts/jquery.form.js"></script>
-  <link href="/atom.xml" rel="alternate" title="Rockolateka Radiofonica" type="application/atom+xml">
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-
-</head>
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
   <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
@@ -96,19 +60,7 @@
 </ul>
 
 </nav>
-  
-  <div id="primary" role="main">
-
-    <div id="col-left">
-	<h2>Emisiones en Vivo</h2>
-	<ul id="rockolites"></ul>
-
-	<h2>Etiquetas:</h2>
-	<ul id="tags">
-	</ul>
-<span id='w3c' style='bottom:0px'><a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a></span>
-</div><!-- fin col izquierda -->
-
+  <div id="main">
     <div id="content">
       <div class="blog-index">
   
@@ -149,29 +101,34 @@
 </aside>
 
     </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Cheves Stuart -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
 
-    <!-- inicio columna derecha -->
-<div id="col-right">
-	
-	<div id="Formbuscar" class="ui-widget-header"><input type="text" value="Buscar" name='Formbuscar' /></div>
-		<h2>Acciones</h2>
-	<ul id="actions">
-		<li><a href="javascript:;" id="playlist-setPlaylist-audio-mix">Cargar Lista</a></li>
-		<li><a href="javascript:;" id="remover">remover_cancion</a></li>
-		<li><a href="javascript:;" id="select-2">select-2</a></li>
-	</ul>
-
-
-</div><!-- fin col derecha -->
+</footer>
+  
 
 
 
-</div>
-	<footer id="footer">
-		<div class="inner">
-			</p>
-		</div>
-	</footer>
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
 
 </body>
 </html>
