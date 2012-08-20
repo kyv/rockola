@@ -265,7 +265,7 @@ def get_tags(file)
 end
 
 get '/icestat' do
-  @url = "http://localhost.org:8000"
+  @url = "http://radio.flujos.org:8000"
   @res = ''
   open(@url, "User-Agent" => "Ruby/#{RUBY_VERSION}",
     "From" => "contacto@flujos.org",

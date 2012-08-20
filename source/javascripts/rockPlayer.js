@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('media');
+	cargar_lista('http://flujos.org/media');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({

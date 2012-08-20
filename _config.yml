@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://kyv.github.com/rockola
+title: Rockolateka Radiofonica 
+subtitle: Una Rockolateka para pasar el ocio.
+author: Cheves Stuart
 simple_search: http://google.com/search
 description:
 
@@ -26,7 +26,7 @@ email:
 # ----------------------- #
 
 # If publishing to a subdirectory as in http://site.com/project set 'root: /project'
-root: /
+root: /rockola
 permalink: /blog/:year/:month/:day/:title/
 source: source
 destination: public
