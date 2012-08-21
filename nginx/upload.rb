@@ -1,4 +1,12 @@
 # upload.rb
+#
+#Rockola API
+#http://rockola.flujos.org
+#
+#Copyright 2012, kev 
+#Licensed under the GPL Version 2 license.
+#
+#Descripción: interaccion con media (audio)
 
 # para arrancar
 # gem install sinatra
