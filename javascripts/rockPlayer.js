@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('http://rockola.flujos.org/media');
+	cargar_lista('http://rockola.flujos.org/cola');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({
@@ -187,8 +187,6 @@ $(function(){
 /*
  * Funcion encargada de cargar la lista de resproduccion
  */
-// tag cloud
-
 cargar_lista = function (lista_url){
 	$.ajax({
 		url: lista_url,
@@ -199,7 +197,12 @@ cargar_lista = function (lista_url){
 			var lista_HTML = '';
 			inicio=true
 			$.each(listaReproducccion, function(key, cancion) {
-				lista_HTML += '<li id="rockolaTrack'+key+'"><h2> '+ cancion.artist +' - <span>' +
+				lista_HTML += '<li id="rockolaTrack'+key+'"';
+
+				if(cancion.current){
+				  lista_HTML += ' class="activa"';
+				}
+				lista_HTML += '><h2>'+ cancion.artist +' - <span>' +
 					cancion.title + '</span></h2><p>'+cancion.duration+' ';
 				if(cancion.mp3){
 					lista_HTML += '<a href=' + cancion.mp3 + ' class="mp3">mp3</a>';
