@@ -14,12 +14,14 @@ require 'taglib'
 require 'json'
 require 'open-uri'
 require 'hpricot'
-
+require 'librmpd'
+require 'digest/md5'
 enable :sessions
-#set :dump_errors, false
-set :html_path, '/tmp/http/rockola/files' #hard links to /srv/media
-set :store_path, '/tmp/media' #git-media store media files
 
+#set :dump_errors, false
+set :html_path, '/srv/http/rockola/files' #hard links to /srv/media
+set :store_path, '/srv/media' #git-media store media files
+set :nginx_tmp, '/tmp'
 DataMapper::Logger.new(STDOUT, :debug) #depurar db
 # inicializar base de datos
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/rock.db")
@@ -109,6 +111,12 @@ post '/upload' do
    store = settings.store_path + "/" + md5
    finpath = settings.html_path + "/" + id.to_s + "/" + name
 
+   unless File.exists? settings.nginx_tmp + '1'
+      range = 0..9
+      range.each do |i|
+          FileUtils.mkdir_p settings.nginx_tmp + i.to_s
+      end
+   end 
    unless File.exists? settings.store_path
       FileUtils.mkdir_p settings.store_path
    end 
@@ -179,6 +187,74 @@ get '/media' do
 
     end
     @data.to_json
+end
+get '/current' do
+    mpd = MPD.new 'localhost', 6600
+    mpd.connect
+    song = mpd.current_song
+    mpd.disconnect
+    mpd = nil
+    file = song.file.force_encoding('UTF-8')
+    path = settings.html_path+ file
+    digest = Digest::MD5.hexdigest(File.read(path))
+    name = File.basename(file)
+    h = Hash.new
+    unless song.title.nil?
+	    h[:title] = song.title.force_encoding('UTF-8')
+    end
+    unless song.artist.nil?
+	    h[:artist] = song.artist.force_encoding('UTF-8')
+    end
+    unless song.genre.nil?
+	    h[:genre] = song.genre.force_encoding('UTF-8')
+    end
+    h[:file] = name
+    h[:genre] = song.genre
+    if name.match(/.mp3$/)
+       h[:mp3] = "audio/#{file}"
+    end
+    if name.match(/.og(g|a)$/)
+       h[:oga] = "audio/#{file}"
+    end
+    return h.to_json 
+end
+get '/cola' do
+    mpd = MPD.new 'localhost', 6600
+    mpd.connect
+    @list = []
+    playlist = mpd.playlist
+    current = mpd.current_song
+    mpd.disconnect
+    playlist.each do |song|
+        h = Hash.new
+        file = song.file.force_encoding('UTF-8')
+        path = settings.html_path + file
+        digest = Digest::MD5.hexdigest(File.read(path))
+        name = File.basename(file)
+        unless song.title.nil?
+	    h[:title] = song.title.force_encoding('UTF-8')
+        end
+        unless song.artist.nil?
+	    h[:artist] = song.artist.force_encoding('UTF-8')
+        end
+        unless song.genre.nil?
+	    h[:genre] = song.genre.force_encoding('UTF-8')
+        end
+
+        h[:duration] = song.time
+        h[:file] = name
+        if name.match(/.mp3$/)
+           h[:mp3] = "audio/#{file}"
+        end
+        if name.match(/.og(g|a)$/)
+           h[:oga] = "audio/#{file}"
+        end
+        if song.id == current.id 
+ 	    h[:current] = true
+        end
+        @list.push(h)
+    end 
+    return @list.to_json 
 end
 
 get '/users' do

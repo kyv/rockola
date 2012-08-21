@@ -1,52 +1,28 @@
-
-
-	<article class="post">
-
-		<header class="post-header">
-			<h1 class="post-title">{{ page.title }}</h1>
-		</header><!-- .post-title -->
-		<div class="post-meta">
-			<time class="date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date_to_long_string }}</time>
-			<cite><em>by</em> Yoosuf</cite>
-		</div><!-- .post-meta -->
-		<div class="post-content">
-			{{ content }}
-		</div><!-- .post-content -->
-		<footer class="post-footer">
-
-		</footer><!-- .post-footer -->
-	</article><!-- .post -->
-
-	<div class="comments">
-
-
-		<div class="fb-comments" data-href="{{ site.production_url }}{{ page.url }}" data-num-posts="2" data-width="620"></div>
-
-		<!--
-	<div class="fb-like" data-href="my.domain.com" data-layout="standard" data-send="false" data-width="255" data-show-faces="false" data-action="recommend" data-font="verdana"></div>
--->
-	</div>
-
-
-	<nav class="pagenation">
-		<ul>
-			{% if page.previous %}
-				<li class="before left"><a rel="prev" href="{{ page.previous.url }}" title="View {{ page.previous.title }}">&laquo; Previous</a></li>
-			{% endif %}
-			{% if page.next %}
-				<li class="next right"><a rel="next" href="{{ page.next.url }}" title="View {{ page.next.title }}">Next &raquo;</a></li>
-			{% endif %}
-		</ul>
-	</nav>
-
-	<!--
-	<div id="related" class="clear">
-	  <h2>Related Posts</h2>
-	  <ul class="posts">
-	    {% for post in site.related_posts limit:3 %}
-	      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-	    {% endfor %}
-	  </ul>
-	</div>
-	-->
-
+{% unless page.no_header %}
+  <header>
+    {% if index %}
+      <h1 class="entry-title"><a href="{{ root_url }}{{ post.url }}">{% if site.titlecase %}{{ post.title | titlecase }}{% else %}{{ post.title }}{% endif %}</a></h1>
+    {% else %}
+      <h1 class="entry-title">{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %}</h1>
+    {% endif %}
+    {% unless page.meta == false %}
+      <p class="meta">
+        {% include post/date.html %}{{ time }}
+        {% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
+         | <a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread">Comments</a>
+        {% endif %}
+      </p>
+    {% endunless %}
+  </header>
+{% endunless %}
+{% if index %}
+  <div class="entry-content">{{ content | excerpt }}</div>
+  {% capture excerpted %}{{ content | has_excerpt }}{% endcapture %}
+  {% if excerpted == 'true' %}
+    <footer>
+      <a rel="full-article" href="{{ root_url }}{{ post.url }}">{{ site.excerpt_link }}</a>
+    </footer>
+  {% endif %}
+{% else %}
+<div class="entry-content">{{ content }}</div>
+{% endif %}
