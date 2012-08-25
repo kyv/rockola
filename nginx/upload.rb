@@ -213,53 +213,46 @@ get '/media' do
         hash[:oga] = "audio/#{f.user_id}/#{f.name}"
       end
       @data.push(hash)
-
     end
     @data.to_json
 end
 get '/current' do
     mpd = MPD.new 'localhost', 6600
     mpd.connect
-    song = mpd.current_song
+    c = mpd.current_song
     mpd.disconnect
     mpd = nil
-    file = song.file.force_encoding('UTF-8')
+    file = c.file.force_encoding('UTF-8')
     path = settings.html_path+ file
-    digest = Digest::MD5.hexdigest(File.read(path))
     name = File.basename(file)
-    h = Hash.new
-    unless song.title.nil?
-	    h[:title] = song.title.force_encoding('UTF-8')
-    end
-    unless song.artist.nil?
-	    h[:artist] = song.artist.force_encoding('UTF-8')
-    end
-    unless song.genre.nil?
-	    h[:genre] = song.genre.force_encoding('UTF-8')
-    end
-    h[:file] = name
-    h[:genre] = song.genre
-    if name.match(/.mp3$/)
-       h[:mp3] = "audio/#{file}"
-    end
-    if name.match(/.og(g|a)$/)
-       h[:oga] = "audio/#{file}"
-    end
-    return h.to_json 
+    return get_media('16_-_Process_-_John_Lee_Hooker.mp3').to_json
 end
 get '/cola' do
+    list = []
     mpd = MPD.new 'localhost', 6600
     mpd.connect
-    @list = []
     playlist = mpd.playlist
-    current = mpd.current_song
     mpd.disconnect
     playlist.each do |song|
         h = Hash.new
         file = song.file.force_encoding('UTF-8')
-        path = settings.html_path + file
-        digest = Digest::MD5.hexdigest(File.read(path))
+	path = settings.html_path+ '/'+ file
         name = File.basename(file)
+        get_media(name).each do |song|
+	    list.push(song)
+        end
+    end
+    list.to_json
+end
+def get_media(song_name)
+    list = []
+    mpd = MPD.new 'localhost', 6600
+    mpd.connect
+    current = mpd.current_song
+    mpd.disconnect
+    Media.all(:name.like => song_name).each do |song|
+        p song.name
+        h = Hash.new
         unless song.title.nil?
 	    h[:title] = song.title.force_encoding('UTF-8')
         end
@@ -269,21 +262,23 @@ get '/cola' do
         unless song.genre.nil?
 	    h[:genre] = song.genre.force_encoding('UTF-8')
         end
-
-        h[:duration] = song.time
-        h[:file] = name
-        if name.match(/.mp3$/)
-           h[:mp3] = "audio/#{file}"
+        if song.respond_to?('time')
+	    h[:duration] = song.time
+	end
+        h[:file] = song.name.force_encoding('UTF-8')
+        if song.name.match(/.mp3$/)
+           h[:mp3] = "audio/#{song.user_id}/#{song.name}"
         end
-        if name.match(/.og(g|a)$/)
-           h[:oga] = "audio/#{file}"
-        end
+        if song.name.match(/.og(g|a)$/)
+           h[:oga] = "audio/#{song.user.id}/#{song.name}"
+       end
         if song.id == current.id 
  	    h[:current] = true
         end
-        @list.push(h)
-    end 
-    return @list.to_json 
+        list.push(h)
+    end
+    p list
+    return list
 end
 
 get '/users' do
