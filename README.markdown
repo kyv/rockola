@@ -7,8 +7,9 @@ Puedes encontrar un demo en http://kyv.github.com/rockola/, y el sitio funcional
 ## Documentation
 
 Octopress [Octopress.org](http://octopress.org/)
+Copyright © 2009-2011 Brandon Mathis
 
-## License
+## Licencia
 Donde no si indica lo contrario, todo contenido Copyright © 2011-2012 Kevin Brown, Bajo licencia MIT. 
 
 (The MIT License)
