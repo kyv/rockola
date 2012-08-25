@@ -165,17 +165,18 @@ post '/upload' do
    data[:bitrate] = media_data[:bitrate] 
    data[:tags] = "#{media_data[:artist]}, #{genre}"
    data[:user_id] = user.id
-   @media = Array.new
-   @media.push(Media.create(data))
-   p @media.to_json
-   return @media.to_json
+   media = Array.new
+   media.push(Media.create(data))
+   return media.to_json
 end
 
 get '/session' do
-   unless @login.nil?
-      return 'user' 
+   var = @login.to_s
+   p var
+   if var == 'nil'
+	return nil 
    else
-      return nil
+      return 'user' 
    end 
 end
 
