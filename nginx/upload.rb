@@ -304,10 +304,13 @@ end
 
 get '/logout' do 
   session[:login] = nil
-  redirect '/' 
+  @login = nil
+  if session[:login].nil? && @login.nil?
+     return 'Vuelvas pronto'
+  else
+     return 'oops fallas al salir'
+  end
 end
-
-get('/login'){ haml :admin }
 
 get '/makeadmin' do #create default user
     password_salt = BCrypt::Engine.generate_salt
@@ -316,23 +319,33 @@ get '/makeadmin' do #create default user
     redirect '/users' 
 end
 
+get('/login'){ 
+   form = {:form => 'login', :md5 => params['md5'], :name => params['name'], :type => params['type'], :path => params['path'], :size => params['size'] }
+   return form.to_json
+}
 post '/login' do
+  unless open_captcha_valid?
+     return 'Captcha invalido, intenta nuevamente' 
+  end
   email=params['email']
   pass=params['password']
   user = User.first(:email=>email)
+  if user.nil?
+     return 'No existe tal usuario, intenta nuevamente'
+  end
   salt = user.salt
   pass_hash = BCrypt::Engine.hash_secret(params[:password], salt)
   if User.all(:pass=>pass_hash, :email=>user.email)
      session[:login] = user.email
-     redirect to("/")
+     p session[:login].inspect
+     return 'Benvenidos '+ user.email 
   else
-    'login failure'
-    'Username or Password incorrect'
+    return 'error:contrasena'
   end
 end
 
 get "/signup" do
-  haml :signup
+    return '[{form:signup}]'
 end
 
 post "/signup" do
