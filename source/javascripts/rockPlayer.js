@@ -25,13 +25,53 @@ $(function(){
 				swfPath: "js",
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
-           $.ajax({
-           'url' : 'http://rockola.flujos.org/tags',
-           dataType: 'json',
-           success: function(json){
-                $.each(json, function(key, value){
-		    var li = $("<li>");
-			$("<a>").text(key).attr({title:"See all pages tagged with " + key, href:"tags/" + key }).appendTo(li);
+	$('#submitlogin').click(function() {
+  	   $('#Formlogin').ajaxSubmit({
+              dataType: 'html',
+	      success: function(data) {
+		$('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');	
+		$('#logoutspan').show();
+	var session = $.ajax({
+	            'url' : 'session',
+	            dataType: 'html',
+		    async: false
+		}).responseText;
+	   if (session === 'user') {
+		$('li#loginitem').hide();
+		$('a#upload').show();
+		} else {
+		$('#logoutspan').hide();
+		oc = 'http://www.opencaptcha.com/img/'
+ 	        date = Date.new
+		path = window.location.pathname.split( '/' );
+		image_name = path[2]+ date
+                source = oc+ image_name
+		$('input.captcha').val(image_name);
+		$('img.captcha').attr('src', source);
+              }
+
+	    }
+	  });
+	});
+	$.ajax({
+                  'url' : 'logout',
+                  dataType: 'html',
+                  async: false,
+		  success: function(data) { 
+		  $('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');    
+		$('li#loginitem').show();
+		  }
+                });
+	$('#showlogin').click(function() {
+  	   $('#logindiv').toggle('slow');
+	});
+        $.ajax({
+        'url' : 'http://rockola.flujos.org/tags',
+        dataType: 'json',
+        success: function(json){
+           $.each(json, function(key, value){
+		var li = $("<li>");
+		$("<a>").text(key).attr({title:"See all pages tagged with " + key, href:"tags/" + key }).appendTo(li);
 
                     li.children().css("fontSize", (value / 10 < 1) ? value / 10 + 1 + "em": (value / 10 > 2) ? "2em" : value / 10 + "em");
                     li.appendTo('#tags');
@@ -49,7 +89,6 @@ $(function(){
 			}]);
 			return false;
 		});
-	// upload form
         $.ajax({
             'url' : 'http://rockola.flujos.org/icestat',
             dataType: 'json',
