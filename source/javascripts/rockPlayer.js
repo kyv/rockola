@@ -25,45 +25,61 @@ $(function(){
 				swfPath: "js",
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
+	$('#Buttonlogout').click(function() {
+	    $.ajax({
+                  'url' : 'logout',
+                  dataType: 'html',
+                  async: false,
+		  success: function(data) { 
+		  $('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');    
+		$('#Buttonlogin').show();
+		$('#Buttonlogout').hide();
+		$('a#upload').hide();
+		  }
+                });
+	});
 	$('#submitlogin').click(function() {
   	   $('#Formlogin').ajaxSubmit({
               dataType: 'html',
 	      success: function(data) {
 		$('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');	
-		$('#logoutspan').show();
+		$('#Buttonlogout').show();
+ 	   t = new Date();
+	   date = t.getTime();
+	   host = window.location.hostname;
+	   image_name = host+ date+ '.jpgx';
+           source = oc+ image_name;
+	   $('input.captcha').val(image_name);
+	   $('img.captcha').attr('src', source);
+
 	var session = $.ajax({
 	            'url' : 'session',
 	            dataType: 'html',
 		    async: false
 		}).responseText;
 	   if (session === 'user') {
-		$('li#loginitem').hide();
+		$('#Buttonlogout').show();
+		$('#Buttonlogin').hide();
 		$('a#upload').show();
-		} else {
-		$('#logoutspan').hide();
-		oc = 'http://www.opencaptcha.com/img/'
- 	        date = Date.new
-		path = window.location.pathname.split( '/' );
-		image_name = path[2]+ date
-                source = oc+ image_name
-		$('input.captcha').val(image_name);
-		$('img.captcha').attr('src', source);
-              }
+              } else {
+		$('#Buttonlogout').hide();
+		$('#Buttonlogin').show();
+		$('a#upload').hide();
+	       } 
 
 	    }
 	  });
 	});
-	$.ajax({
-                  'url' : 'logout',
-                  dataType: 'html',
-                  async: false,
-		  success: function(data) { 
-		  $('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');    
-		$('li#loginitem').show();
-		  }
-                });
-	$('#showlogin').click(function() {
+	$('#Buttonlogin').click(function() {
   	   $('#logindiv').toggle('slow');
+	   oc = 'http://www.opencaptcha.com/img/';
+ 	   t = new Date();
+	   date = t.getTime();
+	   host = window.location.hostname;
+	   image_name = host+ date+ '.jpgx';
+           source = oc+ image_name;
+	   $('input.captcha').val(image_name);
+	   $('img.captcha').attr('src', source);
 	});
         $.ajax({
         'url' : 'http://rockola.flujos.org/tags',
