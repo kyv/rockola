@@ -12,10 +12,11 @@
 # gem install sinatra
 # ruby -rubygems upload.rb
 
+require 'rubygems'
 require 'sinatra'
 require 'fileutils'
 require 'data_mapper'
-require 'sinatra/flash'
+#require 'sinatra/flash'
 require 'bcrypt'
 require 'haml'
 require 'taglib'
@@ -137,11 +138,11 @@ post '/upload' do
    end 
 
    if File.exists? store 
-     flash[:upload] = 'File Exists'
+     #flash[:upload] = 'File Exists'
    else
      FileUtils.cp(data[:path], store)
      FileUtils.ln(store, finpath)
-     flash[:upload] = 'New file: ' + data[:name]
+     #flash[:upload] = 'New file: ' + data[:name]
    end
 
    media_data = get_tags(finpath)
@@ -354,7 +355,7 @@ post "/signup" do
   password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
   User.create(email: email, pass: password_hash, salt: password_salt)
   session[:login] = email
-  flash[:login] = "Successfully created #{email}"
+  #flash[:login] = "Successfully created #{email}"
   redirect '/login'
 end
 
