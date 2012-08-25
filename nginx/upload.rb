@@ -86,10 +86,11 @@ end
 before do
   @login = session[:login].inspect
   user = User.first(:email=>session[:login])
-  @id = user.id
+  unless user.nil?
+     id = user.id
+  end
 end
 post '/update' do
-   p params
    unless admin?
       redirect "/login"
    end
