@@ -101,44 +101,47 @@ post '/update' do
    media.update( title: title, artist: artist, genre: genre, tags: tags)
 end
 post '/upload' do
+   data = Hash.new
+   if defined? params['archivo.md5']
+     data[:md5] = params['archivo.md5']
+     data[:name] = params['archivo.name']
+     data[:type] = params['archivo.content_type']
+     data[:path] = params['archivo.path']
+     data[:size] = params['archivo.size']
+   end   
+  # if defined? params['md5']
+  #   md5 = params['md5']
+  #   name = params['name']
+  #   type = params['content_type']
+  #   path = params['path']
+  #   size = params['size']
+  # end
 
    unless admin?
-      redirect "/login"
+      h = Hash.new
+      h[:type] = 'error'
+      return h.to_json
    end
-   email = session[:login]
-   user = User.first(:email=>email)
+   user = User.first(:email=>session[:login])
+   p user
    id = user.id
-   if defined? params['archivo.md5']
-     md5 = params['archivo.md5']
-     name = params['archivo.name']
-     type = params['archivo.content_type']
-     path = params['archivo.path']
-     size = params['archivo.size']
-     submit = params['submit']
-   end
 
-   store = settings.store_path + "/" + md5
-   finpath = settings.html_path + "/" + id.to_s + "/" + name
+   store = settings.store_path + "/" + data[:md5]
+   finpath = settings.html_path + "/" + user.id.to_s + "/" + data[:name]
 
-   unless File.exists? settings.nginx_tmp + '1'
-      range = 0..9
-      range.each do |i|
-          FileUtils.mkdir_p settings.nginx_tmp + i.to_s
-      end
-   end 
-   unless File.exists? settings.store_path
+  unless File.exists? settings.store_path
       FileUtils.mkdir_p settings.store_path
    end 
-   unless File.exists? "#{settings.html_path}/#{id.to_s}" 
-      FileUtils.mkdir_p "#{settings.html_path}/#{id.to_s}"
+   unless File.exists? "#{settings.html_path}/#{user.id.to_s}" 
+      FileUtils.mkdir_p "#{settings.html_path}/#{user.id.to_s}"
    end 
 
    if File.exists? store 
      flash[:upload] = 'File Exists'
    else
-     FileUtils.cp(path, store)
+     FileUtils.cp(data[:path], store)
      FileUtils.ln(store, finpath)
-     flash[:upload] = 'New file: ' + name
+     flash[:upload] = 'New file: ' + data[:name]
    end
 
    media_data = get_tags(finpath)
@@ -153,9 +156,26 @@ post '/upload' do
    if media_data[:title].nil?
 	media_data[:title] = 'nil'
    end
-   media_tags = "#{media_data[:artist]}, #{genre}"
-   Media.create(name: name, md5: md5, type: type, path: finpath, user_id: id, size: size, title: media_data[:title], artist: media_data[:artist], genre: genre, duration: media_data[:duration], channels: media_data[:channels], bitrate: media_data[:bitrate], tags: media_tags)
-   redirect to("/media/#{md5}")
+   data[:title] = media_data[:title] 
+   data[:artist] = media_data[:artist] 
+   data[:genre] = media_data[:genre] 
+   data[:duration] = media_data[:duration] 
+   data[:channels] = media_data[:channels] 
+   data[:bitrate] = media_data[:bitrate] 
+   data[:tags] = "#{media_data[:artist]}, #{genre}"
+   data[:user_id] = user.id
+   @media = Array.new
+   @media.push(Media.create(data))
+   p @media.to_json
+   return @media.to_json
+end
+
+get '/session' do
+   unless @login.nil?
+      return 'user' 
+   else
+      return nil
+   end 
 end
 
 get '/search' do
