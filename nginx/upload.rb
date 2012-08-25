@@ -188,8 +188,8 @@ get '/search' do
    if params[:title].nil?
       params[:title] = 'xxx'
    end
-   @media = Media.all(:title.like => "%#{params[:title]}%") | Media.all(:artist.like => "%#{params[:artist]}%")
-   @media.to_json
+   media = Media.all(:title.like => "%#{params[:title]}%") | Media.all(:artist.like => "%#{params[:artist]}%")
+   media.to_json
 end
 get '/tags' do
     tags = Hash.new(0)
@@ -202,9 +202,9 @@ get '/tags' do
     return tags.to_json
 end
 get '/media' do
-    @data = []
-    @media = Media.all(:order => [ :id.desc ], :limit => 20)
-    @media.each do |f|
+    data = []
+    media = Media.all(:order => [ :id.desc ], :limit => 20)
+    media.each do |f|
       hash = {} # convertir class a hash, y borrar metodos no necesarios
       f.instance_variables.each {|var| hash[var.to_s.delete("@")] = f.instance_variable_get(var) }
       hash.delete("_repository"); hash.delete("_key");hash.delete("_collection"); hash.delete("#"); hash.delete("_persistence_state")
@@ -214,10 +214,11 @@ get '/media' do
       if f.name.match(/.og(g|a)$/)
         hash[:oga] = "audio/#{f.user_id}/#{f.name}"
       end
-      @data.push(hash)
+      data.push(hash)
     end
-    @data.to_json
+    data.to_json
 end
+
 get '/current' do
     mpd = MPD.new 'localhost', 6600
     mpd.connect
@@ -227,8 +228,9 @@ get '/current' do
     file = c.file.force_encoding('UTF-8')
     path = settings.html_path+ file
     name = File.basename(file)
-    return get_media('16_-_Process_-_John_Lee_Hooker.mp3').to_json
+    return get_media(name).to_json
 end
+
 get '/cola' do
     list = []
     mpd = MPD.new 'localhost', 6600
@@ -246,6 +248,7 @@ get '/cola' do
     end
     list.to_json
 end
+
 def get_media(song_name)
     list = []
     mpd = MPD.new 'localhost', 6600
@@ -287,20 +290,20 @@ get '/users' do
     unless admin?
       redirect "/login"
     end
-    @users = User.all(:order => [ :id.desc ], :limit => 20).to_json
+    users = User.all(:order => [ :id.desc ], :limit => 20).to_json
 end
 
 get '/media/:md5' do
-    @media = get_params(params[:md5]).to_json
+    media = get_params(params[:md5]).to_json
 end
 
 get '/media/html' do # ¿porque no funciona?
-    @media = Media.all(:order => [ :id.desc ], :limit => 20)
+    media = Media.all(:order => [ :id.desc ], :limit => 20)
     erb :media_html
 end
 
 get '/media/:md5/html' do
-    @media = get_params(params[:md5])
+    media = get_params(params[:md5])
     erb :media_html
 end
 
@@ -380,17 +383,17 @@ def get_tags(file)
 end
 
 get '/icestat' do
-  @url = "http://radio.flujos.org:8000"
-  @res = ''
-  open(@url, "User-Agent" => "Ruby/#{RUBY_VERSION}",
+  url = "http://radio.flujos.org:8000"
+  res = ''
+  open(url, "User-Agent" => "Ruby/#{RUBY_VERSION}",
     "From" => "contacto@flujos.org",
     "Referer" => "http://www.flujos.org/") { |f|
-    @res = f.read
+    res = f.read
   }
-  doc = Hpricot(@res)
+  doc = Hpricot(res)
   #@streamdata.to_json
   #@streamdata.each do |mount|
-  @mounts = []
+  mounts = []
   h = Hash.new
   (doc/"/html/body/div").each do |data|
      doc_x = Hpricot(data.inner_html)
@@ -403,9 +406,9 @@ get '/icestat' do
      #regex = /Genre\:\s*(.*$)/
      #genre = doc_x.search("//td").inner_html.to_s.match(regex)
      h = {'mount' => mount, 'title' => title, 'description' => desc, 'type' => type, 'created_at' => created_at, 'current' => current } 
-     @mounts.push(h)
+     mounts.push(h)
   end
      #h = { 'title'=> mount[0], 'description' => mount[1], 'type' => mount[2], 'created_at' => mount[3], 'bitrate' => mount[4], 'listeners' => mount[5], 'peak' => mount[6], 'genre' => mount[7], 'url' => mount[8], 'song' => mount[9] }
      #@mounts << (doc_x/"table").inner_html
-  return @mounts[1..-2].to_json
+  return mounts[1..-2].to_json
 end
