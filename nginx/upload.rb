@@ -76,15 +76,16 @@ User.auto_upgrade!
 
 helpers do
   def admin?
-    if session[:login].nil? # or if session[:login] not in db
-      return false
-    else
-      return true
-    end
+    not @login.nil? # or if session[:login] not in db
   end
-  def login; return session[:login]; end
+  def getuser; return @login; end
   def protected! ; halt [ 401, 'Not Authorized' ] unless admin? ; end
   def get_params(md5) ; return Media.all(:md5 => md5); end
+end
+before do
+  @login = session[:login].inspect
+  user = User.first(:email=>session[:login])
+  @id = user.id
 end
 post '/update' do
    p params
