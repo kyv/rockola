@@ -1,9 +1,17 @@
 <!-- inicio columna derecha -->
 <div id="col-right">
-	
+   <span class='authbutton' id='logoutspan'><button id='logout'>logout</button></span>
 	<div id="Formbuscar" class="ui-widget-header"><input type="text" value="Buscar" name='Formbuscar' /></div>
+
+	<div style='display:none' id='logindiv'><span id='loginmessage'></span><form id='Formlogin' action="login" method="post"></br>Email: <input id='inputEmail' type="text" name="email"/></br>Password: <input id='inputPass' type="text" name="password"/><img class='captcha' src="../images/search.png" width="110" height="50" alt="captcha"/>
+<input class='captcha' type="hidden" name="open_captcha_image_name" value="image_name"/></p>
+<p><label for="open_captcha_answer">Que ves en el imagen?</label><input  class="text"  type="text" id="open_captcha_answer" name="open_captcha_answer"/>
+<input id='submitlogin' type="button" value="Enviar" /><input type="checkbox" name="registro" value="Nuevo Usuario" />Nuevo Usuario</form>
+</div>
+
 		<h2>Acciones</h2>
 	<ul id="actions">
+	<li id='loginitem'><button id='showlogin'>login</button></li>
 		<li><a href="javascript:;" id="playlist-setPlaylist-audio-mix">Cargar Lista</a></li>
 		<li><a href="javascript:;" id="remover">remover_cancion</a></li>
 		<li><a href="javascript:;" id="select-2">select-2</a></li>
