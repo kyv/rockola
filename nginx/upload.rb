@@ -16,9 +16,7 @@ require 'rubygems'
 require 'sinatra'
 require 'fileutils'
 require 'data_mapper'
-#require 'sinatra/flash'
 require 'bcrypt'
-require 'haml'
 require 'taglib'
 require 'json'
 require 'open-uri'
@@ -302,16 +300,6 @@ end
 
 get '/media/:md5' do
     media = get_params(params[:md5]).to_json
-end
-
-get '/media/html' do # ¿porque no funciona?
-    media = Media.all(:order => [ :id.desc ], :limit => 20)
-    erb :media_html
-end
-
-get '/media/:md5/html' do
-    media = get_params(params[:md5])
-    erb :media_html
 end
 
 get '/logout' do 
