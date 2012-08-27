@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('cola');
+	cargar_lista('http://rockola.flujos.org/cola');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({
