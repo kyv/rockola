@@ -38,7 +38,6 @@ set :nginx_tmp, '/tmp/'
 unless File.exists? settings.nginx_tmp + '1'
    range = 0..9
    range.each do |i|
-       p 'makedir' + i.to_s
        FileUtils.mkdir_p settings.nginx_tmp + i.to_s
    end
 end 
@@ -137,7 +136,6 @@ post '/upload' do
       return h.to_json
    end
    user = User.first(:email=>session[:login])
-   p user
    id = user.id
 
    store = settings.store_path + "/" + data[:md5]
@@ -185,7 +183,6 @@ end
 
 get '/session' do
    var = @login.to_s
-   p var
    if var == 'nil'
 	return nil 
    else
@@ -194,7 +191,6 @@ get '/session' do
 end
 
 get '/search' do
-   p params
    if params[:artist].nil?
       params[:artist] = 'xxx'
    end
@@ -269,7 +265,6 @@ def get_media(song_name)
     current = mpd.current_song
     mpd.disconnect
     Media.all(:name.like => song_name).each do |song|
-        p song.name
         h = Hash.new
         unless song.title.nil?
 	    h[:title] = song.title.force_encoding('UTF-8')
@@ -295,7 +290,6 @@ def get_media(song_name)
         end
         list.push(h)
     end
-    p list
     return list
 end
 
@@ -331,14 +325,12 @@ get '/logout' do
 end
 
 post '/login' do
-  p params
   unless open_captcha_valid?
      return 'Captcha invalido, intenta nuevamente' 
   end
   email=params[:email]
   pass=params[:password]
   if params[:registro] == "true"
-      p 'true'
       salt = BCrypt::Engine.generate_salt
       pass_hash = BCrypt::Engine.hash_secret(pass, salt)
       User.create(email: email, pass: pass_hash, salt: salt)
