@@ -51,14 +51,6 @@ $(function(){
 	$('#submitlogin').click(function() {
   	   $('#Formlogin').ajaxSubmit({
               dataType: 'html',
-	//      beforeSend: function () {
-	//		$('#loader').show();
-	//		$('#loader').css('bottom','100');
-        //			$('#loader').css('left','100');
-        //		},
-        //	      complete: function () {
-        //			$('#loader').hide();
-        //	       },
 	      success: function(data) {
 		$('#loginmessage').empty();	
 		$('#loginmessage').append(data);	
