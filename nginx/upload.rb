@@ -25,12 +25,24 @@ require 'open-uri'
 require 'hpricot'
 require 'librmpd'
 require 'digest/md5'
-enable :sessions
+require 'sinatra/opencaptcha'
 
+use Rack::Session::Cookie, :key => 'rack.session',
+                           :path => '/',
+                           :secret => '3c5f185eed89c2bf687f0fcd94d058d50087a2a9fc1f734735898e4acc48f2b7'
 #set :dump_errors, false
-set :html_path, '/srv/http/rockola/files' #hard links to /srv/media
-set :store_path, '/srv/media' #git-media store media files
-set :nginx_tmp, '/tmp'
+set :html_path, '/srv/http/rockola/files/' #hard links to /srv/media
+set :store_path, '/srv/media/' #git-media store media files
+set :nginx_tmp, '/tmp/'
+
+unless File.exists? settings.nginx_tmp + '1'
+   range = 0..9
+   range.each do |i|
+       p 'makedir' + i.to_s
+       FileUtils.mkdir_p settings.nginx_tmp + i.to_s
+   end
+end 
+ 
 DataMapper::Logger.new(STDOUT, :debug) #depurar db
 # inicializar base de datos
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/rock.db")
