@@ -11,7 +11,7 @@
  */
 //Incio del document ready
 $(function(){
-	cargar_lista('http://rockola.flujos.org/cola');
+	cargar_lista('cola');
 	///////////////
 	rockola.init('#playList ul',
 		new jPlayerPlaylist({
@@ -25,13 +25,89 @@ $(function(){
 				swfPath: "js",
 				supplied: "webmv, ogv, m4v, oga, mp3"
 	}));
-           $.ajax({
-           'url' : 'http://rockola.flujos.org/tags',
-           dataType: 'json',
-           success: function(json){
-                $.each(json, function(key, value){
-		    var li = $("<li>");
-			$("<a>").text(key).attr({title:"See all pages tagged with " + key, href:"tags/" + key }).appendTo(li);
+	$('#Buttonlogout').click(function() {
+	    $.ajax({
+                  'url' : 'logout',
+                  dataType: 'html',
+                  async: false,
+		  success: function(data) { 
+		  $('#loginmessage').empty();    
+		  $('#loginmessage').append(data);    
+		$('#Buttonlogin').show();
+		$('#Buttonlogout').hide();
+		$('a#upload').hide();
+		  }
+                });
+	});
+        $('#Captchareload').click(function() {
+ 	     t = new Date();
+	     date = t.getTime();
+	     host = window.location.hostname;
+	     image_name = host+ date+ '.jpgx';
+             source = oc+ image_name;
+	     $('input.captcha').val(image_name);
+	     $('img.captcha').attr('src', source);
+	});
+	$('#submitlogin').click(function() {
+  	   $('#Formlogin').ajaxSubmit({
+              dataType: 'html',
+	//      beforeSend: function () {
+	//		$('#loader').show();
+	//		$('#loader').css('bottom','100');
+        //			$('#loader').css('left','100');
+        //		},
+        //	      complete: function () {
+        //			$('#loader').hide();
+        //	       },
+	      success: function(data) {
+		$('#loginmessage').empty();	
+		$('#loginmessage').append(data);	
+		$('#Buttonlogout').show();
+ 	   t = new Date();
+	   date = t.getTime();
+	   host = window.location.hostname;
+	   image_name = host+ date+ '.jpgx';
+           source = oc+ image_name;
+	   $('input.captcha').val(image_name);
+	   $('img.captcha').attr('src', source);
+
+	var session = $.ajax({
+	            'url' : 'session',
+	            dataType: 'html',
+		    async: false
+		}).responseText;
+	   if (session === 'user') {
+		$('#Buttonlogout').show();
+		$('#Buttonlogin').hide();
+		$('a#upload').show();
+  	        $('#logindiv').toggle('slow');
+              } else {
+		$('#Buttonlogout').hide();
+		$('#Buttonlogin').show();
+		$('a#upload').hide();
+	       } 
+
+	    }
+	  });
+	});
+	$('#Buttonlogin').click(function() {
+  	   $('#logindiv').toggle('slow');
+	   oc = 'http://www.opencaptcha.com/img/';
+ 	   t = new Date();
+	   date = t.getTime();
+	   host = window.location.hostname;
+	   image_name = host+ date+ '.jpgx';
+           source = oc+ image_name;
+	   $('input.captcha').val(image_name);
+	   $('img.captcha').attr('src', source);
+	});
+        $.ajax({
+        'url' : 'http://rockola.flujos.org/tags',
+        dataType: 'json',
+        success: function(json){
+           $.each(json, function(key, value){
+		var li = $("<li>");
+		$("<a>").text(key).attr({title:"See all pages tagged with " + key, href:"tags/" + key }).appendTo(li);
 
                     li.children().css("fontSize", (value / 10 < 1) ? value / 10 + 1 + "em": (value / 10 > 2) ? "2em" : value / 10 + "em");
                     li.appendTo('#tags');
@@ -49,7 +125,6 @@ $(function(){
 			}]);
 			return false;
 		});
-	// upload form
         $.ajax({
             'url' : 'http://rockola.flujos.org/icestat',
             dataType: 'json',

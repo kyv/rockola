@@ -12,7 +12,15 @@
  */
 $(function() {
 $("<marquee>Rockalateca Virtual al Alcanze de tus Digitoz</marquee>").fadeIn(2000).appendTo('#col-centro h2.label');
-
+        var session = $.ajax({
+                    'url' : 'session',
+                    dataType: 'html',
+                    async: false
+        }).responseText;
+	if (session === 'user') {
+		$('a#upload').show();
+		$('li#loginitem').hide();	
+	}
 	$( "#mainContent" ).tabs({
 		select: function(e, ui) {
 		var t = $(e.target);
@@ -52,19 +60,23 @@ $("<marquee>Rockalateca Virtual al Alcanze de tus Digitoz</marquee>").fadeIn(200
 		}else if(ui.index == 3 ){
 			$('#ventanaFlotante').dialog({
 				title : 'Subir tu propio audio',
-				height:220,
-				width:400,
+				height:'auto',
+				width:'auto',
 				modal: true,
 				buttons: {
 				   "Enviar": function() {
-					var div = $('<div>Para poder organizar la Rockolateca utilizamos etiquetas. Minimamente el audio debe de tener titulo, artista y genero. Pero las etiquetas son libres, por ejemplo el region de origin del audio tambien seria un etiqueta valida.');
 
 					$('#formUploadFile').ajaxSubmit({
 					dataType: 'json',
 					success: function(json) { 
-					   $.each(json, function(key, value){
-					   div.append('<li>Nombre: '+ value.name +'</li><li>Tipo: '+ value.type +'</li><li>Bits: '+ value.size +'</li><form id=formUploadFile action="http://rockola.flujos.org/update" method="post"></br>Title: <input type="text" name="title" value="'+value.title+'"/></br>Artist: <input type="text" name="artist" value="'+value.artist+'"/></br>Tags: <input type="text" name="tags" value="'+value.tags+'"/><input type="hidden" name="id" value="'+value.id+'" ></form></div>');
-                			   $('#uploadform').replaceWith(div); 
+ 			                                                               					   $.each(json, function(key, value){
+					   if (json['type'] === 'error') {
+						$('#uploadform').prepend('<span>favor de registrar</span>');
+						return; 
+					    }
+					$('#formUploadFile').get(0).setAttribute('action', 'update');
+					   $('#uploadform').prepend('<div id="audiodata"><span>Favor de corrigir los datos. Los etiquetas debe de ser descriptivas.</span><br/>'+value.title+' es de tipo '+ value.type +' y '+ value.size +' bits</div>');
+					    $('#formUploadFile').append('<br/>Title: <input type="text" name="title" value="'+value.title+'"/> Artist: <input type="text" name="artist" value="'+value.artist+'"/></br>Tags: <input type="text" name="tags" value="'+value.tags+'"/> Etiquetas son libres :P</form></div>');
 
             				  });
 					 }
@@ -76,7 +88,7 @@ $("<marquee>Rockalateca Virtual al Alcanze de tus Digitoz</marquee>").fadeIn(200
 				}
 			});
 		$('#ventanaFlotante').empty();
-		$('<div id="uploadform"><form id=formUploadFile action="http://rockola.flujos.org/upload" method="post">Archivo: <input type="file" name="archivo" id="inputUploadFile" /></form></div>').fadeIn(1500).appendTo('#ventanaFlotante');
+		$('<div id="uploadform"><form id=formUploadFile action="upload" method="post">Archivo: <input type="file" name="archivo" id="inputUploadFile" /></form></div>').fadeIn(1500).appendTo('#ventanaFlotante');
 		return false;
 	}
 	return true;
@@ -95,6 +107,27 @@ $('#Formbuscar input').focus(function() {
 }).blur(function() {
 	if( this.value=='')
 		this.value='Buscar';
+});
+$('#Formlogin #inputEmail').focus(function() {
+	if( this.value =='Email')
+		this.value='';
+}).blur(function() {
+	if( this.value=='')
+		this.value='Email';
+});
+$('#Formlogin #inputPass').focus(function() {
+	if( this.value =='Contraseña')
+		this.value='';
+}).blur(function() {
+	if( this.value=='')
+		this.value='Contraseña';
+});
+$('#Formlogin #open_captcha_answer').focus(function() {
+	if( this.value =='Que ves en el Imagen?')
+		this.value='';
+}).blur(function() {
+	if( this.value=='')
+		this.value='Que ves en el Imagen?';
 });
 
 ///////////7
