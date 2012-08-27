@@ -108,6 +108,27 @@ $('#Formbuscar input').focus(function() {
 	if( this.value=='')
 		this.value='Buscar';
 });
+$('#Formlogin #inputEmail').focus(function() {
+	if( this.value =='Email')
+		this.value='';
+}).blur(function() {
+	if( this.value=='')
+		this.value='Email';
+});
+$('#Formlogin #inputPass').focus(function() {
+	if( this.value =='Contraseña')
+		this.value='';
+}).blur(function() {
+	if( this.value=='')
+		this.value='Contraseña';
+});
+$('#Formlogin #open_captcha_answer').focus(function() {
+	if( this.value =='Que ves en el Imagen?')
+		this.value='';
+}).blur(function() {
+	if( this.value=='')
+		this.value='Que ves en el Imagen?';
+});
 
 ///////////7
 });

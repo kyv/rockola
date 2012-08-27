@@ -318,50 +318,31 @@ get '/logout' do
   end
 end
 
-get '/makeadmin' do #create default user
-    password_salt = BCrypt::Engine.generate_salt
-    password_hash = BCrypt::Engine.hash_secret(settings.password, password_salt)
-    User.create(email: settings.login, pass: password_hash, salt: password_salt)
-    redirect '/users' 
-end
-
-get('/login'){ 
-   form = {:form => 'login', :md5 => params['md5'], :name => params['name'], :type => params['type'], :path => params['path'], :size => params['size'] }
-   return form.to_json
-}
 post '/login' do
+  p params
   unless open_captcha_valid?
      return 'Captcha invalido, intenta nuevamente' 
   end
-  email=params['email']
-  pass=params['password']
+  email=params[:email]
+  pass=params[:password]
+  if params[:registro] == "true"
+      p 'true'
+      salt = BCrypt::Engine.generate_salt
+      pass_hash = BCrypt::Engine.hash_secret(pass, salt)
+      User.create(email: email, pass: pass_hash, salt: salt)
+  end
   user = User.first(:email=>email)
   if user.nil?
      return 'No existe tal usuario, intenta nuevamente'
   end
   salt = user.salt
-  pass_hash = BCrypt::Engine.hash_secret(params[:password], salt)
+  pass_hash = BCrypt::Engine.hash_secret(pass, salt)
   if User.all(:pass=>pass_hash, :email=>user.email)
      session[:login] = user.email
-     p session[:login].inspect
      return 'Benvenidos '+ user.email 
   else
-    return 'error:contrasena'
+    return 'Error Incomprensible'
   end
-end
-
-get "/signup" do
-    return '[{form:signup}]'
-end
-
-post "/signup" do
-  email=params['login']
-  password_salt = BCrypt::Engine.generate_salt
-  password_hash = BCrypt::Engine.hash_secret(params[:password], password_salt)
-  User.create(email: email, pass: password_hash, salt: password_salt)
-  session[:login] = email
-  #flash[:login] = "Successfully created #{email}"
-  redirect '/login'
 end
 
 def get_tags(file)

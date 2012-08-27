@@ -235,7 +235,28 @@ text-shadow:-1px -1px 2px #29A8FF;
 }
 #footer {
     clear: both;
- }
+}
+#authspan {
+   position: absolute; 
+   right:0;
+   top: 0;
+}
+#authspan button {
+   color: #fff;
+   border: none;
+   background-color: transparent;
+   cursor: pointer;
+}
+#authspan button:before {
+   color: #ddd;
+   content:"+ ";
+}
+#Formlogin {margin-left: 20px}
+#Captchareload {
+  margin-left: 10px;
+  margin-bottom:10px;
+  cursor: pointer;
+}
 /*
  * Soporte para tables y PC con baja resolución
  * (inferiores a 920px)

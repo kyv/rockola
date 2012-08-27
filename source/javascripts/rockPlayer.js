@@ -31,18 +31,29 @@ $(function(){
                   dataType: 'html',
                   async: false,
 		  success: function(data) { 
-		  $('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');    
+		  $('#loginmessage').empty();    
+		  $('#loginmessage').append(data);    
 		$('#Buttonlogin').show();
 		$('#Buttonlogout').hide();
 		$('a#upload').hide();
 		  }
                 });
 	});
+        $('#Captchareload').click(function() {
+ 	     t = new Date();
+	     date = t.getTime();
+	     host = window.location.hostname;
+	     image_name = host+ date+ '.jpgx';
+             source = oc+ image_name;
+	     $('input.captcha').val(image_name);
+	     $('img.captcha').attr('src', source);
+	});
 	$('#submitlogin').click(function() {
   	   $('#Formlogin').ajaxSubmit({
               dataType: 'html',
 	      success: function(data) {
-		$('#loginmessage').replaceWith('<span style="color:red;">'+data+'</span>');	
+		$('#loginmessage').empty();	
+		$('#loginmessage').append(data);	
 		$('#Buttonlogout').show();
  	   t = new Date();
 	   date = t.getTime();
@@ -61,6 +72,7 @@ $(function(){
 		$('#Buttonlogout').show();
 		$('#Buttonlogin').hide();
 		$('a#upload').show();
+  	        $('#logindiv').toggle('slow');
               } else {
 		$('#Buttonlogout').hide();
 		$('#Buttonlogin').show();
