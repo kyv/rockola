@@ -36,7 +36,7 @@ input:focus{
 	src: url(./terminal-grotesque.ttf) format("truetype");
 }
 
-a{text-decoration:none;font-weight:bold;}
+a{text-decoration:none;font-weight:bold;color:#0066DD;}
 .streamdata {
 	font-weight: bold; 
 }
@@ -197,7 +197,7 @@ text-shadow:-1px -1px 2px #29A8FF;
 	margin:0;
 	border: 0;
 }	
-#tags, #rockolites, #actions {
+#tags, #rockolites, #actions, #logindiv {
 	list-style-position:inside;
 	padding:1em;
 	border:1px solid #AAA;
@@ -246,6 +246,8 @@ text-shadow:-1px -1px 2px #29A8FF;
    border: none;
    background-color: transparent;
    cursor: pointer;
+   font-weight: bold;
+   text-shadow: 0 0 5px RGBA(0,0,0,0.6);
 }
 #authspan button:before {
    color: #ddd;
